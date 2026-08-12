@@ -1052,8 +1052,8 @@ h1, h2, h3 { font-family: var(--serif); font-weight: 500; color: var(--text); li
 .footer-watermark {
   position: absolute;
   left: 50%;
-  bottom: -0.06em;
-  transform: translateX(-50%);
+  top: 50%;
+  transform: translate(-50%, -50%);
   font-family: var(--serif);
   font-weight: 500;
   font-size: clamp(6rem, 22vw, 16rem);
