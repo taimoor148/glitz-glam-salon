@@ -1040,6 +1040,8 @@ h1, h2, h3 { font-family: var(--serif); font-weight: 500; color: var(--text); li
    FOOTER
    ============================================================ */
 .site-footer {
+  position: relative;
+  overflow: hidden;
   background:
     radial-gradient(120% 90% at 50% 0%, rgba(110, 31, 44, 0.28) 0%, rgba(23, 12, 16, 0) 55%),
     linear-gradient(180deg, #1d0f14 0%, var(--ink) 100%);
@@ -1047,8 +1049,27 @@ h1, h2, h3 { font-family: var(--serif); font-weight: 500; color: var(--text); li
   border-top: 1px solid rgba(198, 161, 94, 0.4);
 }
 
+.footer-watermark {
+  position: absolute;
+  left: 50%;
+  bottom: -0.06em;
+  transform: translateX(-50%);
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: clamp(6rem, 22vw, 16rem);
+  line-height: 1;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+  color: var(--cream);
+  opacity: 0.035;
+  pointer-events: none;
+  user-select: none;
+  z-index: 0;
+}
+
 /* --- Top brand area --- */
 .footer-top {
+  position: relative; z-index: 1;
   display: flex; flex-direction: column; align-items: center; text-align: center;
   padding-top: clamp(64px, 8vw, 96px);
 }
@@ -1080,6 +1101,7 @@ h1, h2, h3 { font-family: var(--serif); font-weight: 500; color: var(--text); li
 
 /* --- Link columns --- */
 .footer-mid {
+  position: relative; z-index: 1;
   display: grid; grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: clamp(28px, 4vw, 56px);
   padding-top: clamp(48px, 6vw, 72px);
@@ -1136,7 +1158,10 @@ h1, h2, h3 { font-family: var(--serif); font-weight: 500; color: var(--text); li
 }
 
 /* --- Final CTA --- */
-.footer-cta-wrap { padding-top: clamp(52px, 7vw, 80px); }
+.footer-cta-wrap {
+  position: relative; z-index: 1;
+  padding-top: clamp(52px, 7vw, 80px);
+}
 .footer-cta {
   position: relative;
   text-align: center;
@@ -1183,6 +1208,7 @@ h1, h2, h3 { font-family: var(--serif); font-weight: 500; color: var(--text); li
 
 /* --- Bottom bar --- */
 .footer-bottom {
+  position: relative; z-index: 1;
   display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px;
   padding-block: 24px;
   border-top: 1px solid rgba(198, 161, 94, 0.3);
