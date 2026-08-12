@@ -1,0 +1,13 @@
+# Obsidian workspace-local data
+.obsidian/workspace.json
+.obsidian/workspace-mobile.json
+
+# OS / editor
+Thumbs.db
+.DS_Store
+desktop.ini
+
+# Node / Vercel
+node_modules/
+.vercel/
+*.log
