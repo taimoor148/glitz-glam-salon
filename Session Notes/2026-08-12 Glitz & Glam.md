@@ -9,6 +9,7 @@ tags:
   - portfolio
   - footer
   - services
+  - graphics
 ---
 
 # Glitz & Glam — Session Notes
@@ -47,6 +48,16 @@ All `data-wa`, `data-instagram`, `data-facebook`, `data-phone-label`, `data-magn
 - **Featured flagship card** (Bridal Makeup) — full width, gold "Signature Service" chip, feature list.
 - 5 standard cards — category label, numbered badge, feature checklist, "Book This Service →" links.
 - Refactored JS filter into reusable `initFilter()` powering both portfolio and services.
+
+## Session 4 — Decorative graphics
+Added a cohesive set of luxury SVG graphics (all inline — no external sprite):
+
+- **Section-title ornament dividers** — gold diamond flourish under 8 titles (About, Services, Bridal, Experience, Gallery, Reviews, Location, Appointment). Left-aligned on light sections, centered light variant in the appointment CTA. Reusable `.orn-divider` element.
+- **Hero corner filigree** — champagne corner flourishes (top-left + bottom-right) plus 3 twinkling 4-point sparkles. Hidden on mobile, disabled under reduced motion.
+- **Gold corner brackets** — appear on hover for about/bridal media frames (`.media-frame::before`) and static on the footer CTA (`.footer-cta::after`).
+- **Appointment corner filigree** — light champagne corners at top-left / bottom-right.
+- New CSS block: `DECORATIVE GRAPHICS` (before MOBILE MENU), responsive + reduced-motion handling added.
+- Commit `d107e69`, deployed to **glitz-glam-salon.vercel.app** (HTTP 200 verified).
 
 ## Deploy
 - GitHub repo created & pushed.
