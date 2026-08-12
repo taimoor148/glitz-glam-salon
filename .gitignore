@@ -11,3 +11,5 @@ desktop.ini
 node_modules/
 .vercel/
 *.log
+
+.vercel
