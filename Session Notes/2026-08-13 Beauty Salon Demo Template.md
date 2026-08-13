@@ -2,13 +2,14 @@
 type: session-log
 project: Beauty Salon Demo Template
 date: 2026-08-13
-status: complete
+status: deployed
 tags:
   - web
   - beauty-salon
   - demo-template
   - config-driven
   - rebrand
+  - ui-polish
 ---
 
 # Beauty Salon — Demo Template Conversion
@@ -91,3 +92,31 @@ For live preview without a reload: mutate `window.GLAZ` then call
 
 ## Deploy
 Not deployed — this is a demo/template build. Deploy per-salon when a client is onboarded.
+
+---
+
+## Session 2 — Section corner polish (rounded card look)
+
+User asked (Roman Urdu) to round the section corners for a more stylish look.
+
+**What changed** (`css/styles.css` only, `.section` base rule):
+- Sections are now inset **rounded cards** instead of full-width flat bands:
+  - `margin-inline: clamp(0px, 3vw, 44px)` — sections pull in from the viewport
+    edges (full-width on small screens, inset on desktop).
+  - `margin-block: clamp(0px, 1.6vw, 22px)` — breathing room between cards.
+  - `border-radius: clamp(20px, 3vw, 40px)` — rounded corners on every section.
+  - `border: 1px solid rgba(110, 31, 44, 0.14)` — hairline wine border.
+  - `box-shadow: 0 34px 68px -42px rgba(40, 15, 22, 0.4)` — soft floating shadow.
+- Slightly reduced vertical padding (`clamp(56px, 7vw, 104px)`) so the margins
+  keep overall rhythm.
+
+**Verification:**
+- Full-page screenshot at 1440×1000: hero + footer stay full-width, all `main`
+  sections are inset rounded cards with the alternating cream/ink backgrounds
+  intact.
+- Programmatic layout check: no horizontal overflow at 1440 or 320 (`scrollW ==
+  clientW`), hero spans 0→1440, footer spans 0→1440, sections inset ~43px each
+  side, 22px gaps between cards, no clipping.
+- Polish suite (`test-salon-polish.js`) unaffected (CSS-only change, no DOM).
+
+**Status:** committed & pushed, deployed to Vercel.
