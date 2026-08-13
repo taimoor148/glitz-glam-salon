@@ -3,7 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Menu &amp; Prices — Glitz &amp; Glam Beauty Salon</title>
+<title>Menu &amp; Prices — Luxe &amp; Bloom Beauty Salon</title>
+<link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -57,8 +58,8 @@
   <div class="topline"></div>
   <header>
     <img class="logo" src="../assets/logo-mark.svg" alt="">
-    <p class="brand">Glitz <em>&amp;</em> Glam</p>
-    <p class="tag">Beauty Salon &middot; WAPDA Town &middot; Lahore</p>
+    <p class="brand" data-brand>Luxe <em>&amp;</em> Bloom</p>
+    <p class="tag" data-tag>Beauty Salon</p>
     <p class="title">Menu &amp; Prices</p>
     <div class="rule"></div>
   </header>
@@ -72,7 +73,7 @@
     </div>
     <div class="col">
       <strong>Location</strong>
-      WAPDA Town, Phase 1, Lahore, Pakistan
+      <span data-loc></span>
     </div>
     <p class="brand-mark">Beauty, Refined.</p>
   </footer>
@@ -107,6 +108,23 @@
   if (ph) ph.textContent = CFG.phoneDisplay || '';
   var ig = document.querySelector('[data-instagram]');
   if (ig) ig.textContent = (CFG.instagram || '').replace(/^https?:\/\//,'');
+  var br = document.querySelector('[data-brand]');
+  if (br && CFG.brand) {
+    var B = CFG.brand;
+    br.innerHTML = B.wordmark || (B.line1 + (B.amp ? ' <em>&amp;</em> ' : ' ') + B.line2);
+  }
+  var tg = document.querySelector('[data-tag]');
+  if (tg && CFG.brand && CFG.location) {
+    var locStr = [CFG.location.area, CFG.location.city].filter(Boolean).join(' • ');
+    tg.textContent = CFG.brand.sub + (locStr ? ' • ' + locStr : '');
+  }
+  var loc = document.querySelector('[data-loc]');
+  if (loc && CFG.location) {
+    var L = CFG.location;
+    var locFull = [L.street, L.areaPhase, L.city, L.country].filter(Boolean).join(', ');
+    loc.textContent = locFull || '';
+    loc.parentElement.style.display = locFull ? '' : 'none';
+  }
 })();
 </script>
 </body>

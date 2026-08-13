@@ -3,7 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Visiting Card — Glitz &amp; Glam Beauty Salon</title>
+<title>Visiting Card — Luxe &amp; Bloom Beauty Salon</title>
+<link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -61,21 +62,21 @@
 </style>
 </head>
 <body>
-  <p class="stage-title">Glitz &amp; Glam — Visiting Card</p>
+  <p class="stage-title" data-stage>Luxe &amp; Bloom — Visiting Card</p>
   <p class="hint">Print on A4 with double-sided printing — front on page 1, back on page 2. Cards are 85 &times; 55&nbsp;mm. Cut along the card edge.</p>
   <div class="stage">
     <div class="card card--front" aria-label="Card front">
       <div class="inner">
         <img class="logo" src="../assets/logo-mark.svg" alt="">
-        <p class="brand">Glitz <em>&amp;</em> Glam</p>
-        <p class="tag">Beauty Salon &middot; WAPDA Town</p>
+        <p class="brand" data-brand>Luxe <em>&amp;</em> Bloom</p>
+        <p class="tag" data-tag>Beauty Salon</p>
         <div class="rule"></div>
       </div>
     </div>
     <div class="card card--back" aria-label="Card back">
       <div class="strip"></div>
       <div class="inner">
-        <p class="brand">Glitz <em>&amp;</em> Glam</p>
+        <p class="brand" data-brand-back>Luxe <em>&amp;</em> Bloom</p>
         <div class="rule"></div>
         <div class="contact">
           <span class="lbl">Call / WhatsApp</span>
@@ -85,9 +86,7 @@
           <span class="lbl">Instagram</span>
           <span data-instagram></span>
         </div>
-        <div class="contact loc">
-          WAPDA Town, Phase 1, Lahore
-        </div>
+        <div class="contact loc" data-loc></div>
       </div>
     </div>
   </div>
@@ -98,7 +97,26 @@
   var ph = document.querySelector('[data-phone]');
   if (ph) ph.textContent = CFG.phoneDisplay || '';
   var ig = document.querySelector('[data-instagram]');
-  if (ig) ig.textContent = (CFG.instagram || '').replace(/^https?:\/\//,'') || '@glitzandglam';
+  if (ig) ig.textContent = (CFG.instagram || '').replace(/^https?:\/\//,'') || '@luxebloom';
+  var brs = document.querySelectorAll('[data-brand],[data-brand-back]');
+  if (CFG.brand) {
+    var B = CFG.brand;
+    var wm = B.wordmark || (B.line1 + (B.amp ? ' <em>&amp;</em> ' : ' ') + B.line2);
+    brs.forEach(function (el) { el.innerHTML = wm; });
+  }
+  var tg = document.querySelector('[data-tag]');
+  if (tg && CFG.brand && CFG.location) {
+    var locStr = [CFG.location.area, CFG.location.city].filter(Boolean).join(' • ');
+    tg.textContent = CFG.brand.sub + (locStr ? ' • ' + locStr : '');
+  }
+  var stage = document.querySelector('[data-stage]');
+  if (stage && CFG.brand) stage.textContent = CFG.brand.wordmark + ' — Visiting Card';
+  var loc = document.querySelector('[data-loc]');
+  if (loc && CFG.location) {
+    var L = CFG.location;
+    var locFull = [L.areaPhase, L.city].filter(Boolean).join(', ');
+    if (locFull) loc.textContent = locFull; else loc.style.display = 'none';
+  }
 })();
 </script>
 </body>

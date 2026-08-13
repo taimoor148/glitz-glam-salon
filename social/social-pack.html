@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Social Pack — Glitz &amp; Glam Beauty Salon</title>
+<title>Social Pack — Luxe &amp; Bloom Beauty Salon</title>
+<link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -61,7 +62,7 @@
 </style>
 </head>
 <body>
-  <p class="page-title">Glitz &amp; Glam — Social Media Pack</p>
+  <p class="page-title" data-page>Luxe &amp; Bloom — Social Media Pack</p>
 
   <div class="canvas" id="ig-post">
     <div class="logo"><img src="../assets/logo-mark.svg" alt=""></div>
@@ -69,10 +70,10 @@
       <p class="eyebrow">Beauty Salon</p>
       <p class="headline serif">Beauty,<br><em>Refined.</em></p>
       <div class="rule"></div>
-      <p class="sub">WAPDA Town &middot; Lahore</p>
+      <p class="sub" data-loc1>Beauty &middot; Bridal &middot; Spa</p>
     </div>
     <p class="cta">Book on WhatsApp</p>
-    <p class="meta">4.4&#9733; &middot; 2,200+ Google Reviews</p>
+    <p class="meta" data-meta>4.4&#9733; &middot; 2,200+ Google Reviews</p>
   </div>
 
   <div class="canvas" id="ig-story">
@@ -82,16 +83,45 @@
     <div class="mid">
       <p class="eyebrow">Bridal &amp; Party Makeup</p>
       <p class="headline serif">Your Look,<br><em>Perfected.</em></p>
-      <p class="sub">Glitz &amp; Glam &middot; WAPDA Town</p>
+      <p class="sub" data-brand-sub>Luxe &amp; Bloom</p>
     </div>
     <div class="cta-wrap"><p class="cta">Reserve Your Date</p></div>
   </div>
 
   <div class="canvas" id="fb-cover">
     <div class="logo"><img src="../assets/logo-mark.svg" alt=""></div>
-    <p class="brand">Glitz <em>&amp;</em> Glam</p>
-    <p class="tag">Beauty Salon</p>
-    <div class="right">WAPDA Town, Lahore<br>Open 7 Days a Week</div>
+    <p class="brand" data-brand>Luxe <em>&amp;</em> Bloom</p>
+    <p class="tag" data-tag>Beauty Salon</p>
+    <div class="right" data-loc2>Open 7 Days a Week</div>
   </div>
+<script src="../js/config.js"></script>
+<script>
+(function(){
+  var CFG = window.GLAZ || {};
+  if (CFG.brand) {
+    var B = CFG.brand;
+    var wm = B.wordmark || (B.line1 + (B.amp ? ' <em>&amp;</em> ' : ' ') + B.line2);
+    var wmPlain = wm.replace(/<[^>]*>/g,'').replace(/\s+/g,' ').trim();
+    var br = document.querySelector('[data-brand]');
+    if (br) br.innerHTML = wm;
+    var pg = document.querySelector('[data-page]');
+    if (pg) pg.textContent = wmPlain + ' — Social Media Pack';
+    var bs = document.querySelector('[data-brand-sub]');
+    if (bs) bs.textContent = wmPlain + (CFG.location && CFG.location.area ? ' · ' + CFG.location.area : '');
+  }
+  if (CFG.location) {
+    var L = CFG.location;
+    var locStr = [L.area, L.city].filter(Boolean).join(' · ');
+    var l1 = document.querySelector('[data-loc1]');
+    if (l1) l1.innerHTML = locStr ? (L.area + ' &middot; ' + L.city) : 'Beauty &middot; Bridal &middot; Spa';
+    var l2 = document.querySelector('[data-loc2]');
+    if (l2) l2.innerHTML = locStr ? (L.area + ', ' + L.city + '<br>Open 7 Days a Week') : 'Open 7 Days a Week';
+  }
+  if (CFG.rating && CFG.reviewCount) {
+    var meta = document.querySelector('[data-meta]');
+    if (meta) meta.textContent = CFG.rating + '\u2605' + ' \u00b7 ' + Number(CFG.reviewCount).toLocaleString() + '+ Google Reviews';
+  }
+})();
+</script>
 </body>
 </html>

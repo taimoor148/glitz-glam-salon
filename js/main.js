@@ -19,6 +19,10 @@
       .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
   }
 
+  /* Brand + location are applied first so word-reveal & reveal observers
+     process the final text (config can rebrand every section title). */
+  applyBrand();
+
   /* ---------- 1. Apply business configuration ---------- */
   function applyConfig() {
     if (!CFG || !CFG.whatsapp) return;
@@ -82,6 +86,206 @@
         document.head.appendChild(og);
       }
       og.setAttribute('content', CFG.siteUrl);
+    }
+  }
+
+  /* ---------- 1b. Apply brand + location (config-driven) ---------- */
+  function applyBrand() {
+    var B = CFG.brand || {};
+    var L = CFG.location || {};
+    if (!B.name) return;
+
+    var amp = B.amp !== false;
+    var line1 = B.line1 || '';
+    var line2 = B.line2 || '';
+    var wordmark = B.wordmark || line1 + (amp ? ' & ' : ' ') + line2;
+    var name = B.name;
+    var sub = B.sub || '';
+
+    /* Location is optional — empty strings simply drop every location line. */
+    var area = (L.area || '').trim();
+    var areaPhase = (L.areaPhase || '').trim();
+    var city = (L.city || '').trim();
+    var country = (L.country || '').trim();
+    var postal = (L.postal || '').trim();
+    var street = (L.street || '').trim();
+    var hasLoc = !!(area || city || street);
+    var phase = areaPhase.indexOf(area) === 0 ? areaPhase.slice(area.length).trim() : '';
+    var locParts = [];
+    if (area) locParts.push(area);
+    if (city) locParts.push(city);
+    var locLine = locParts.join(' • ');
+    var locComma = locParts.join(', ');
+    var cityCountry = [city, country].filter(Boolean).join(', ');
+    var fullStreet = [street, areaPhase].filter(Boolean).join(', ');
+
+    function setText(sel, txt) { var el = document.querySelector(sel); if (el) el.textContent = txt; }
+    function setHTML(sel, html) { var el = document.querySelector(sel); if (el) el.innerHTML = html; }
+    function setMeta(attr, content) { var el = document.querySelector('meta[' + attr + ']'); if (el) el.setAttribute('content', content); }
+
+    var locSuffix = locComma ? ' in ' + locComma : '';
+    var locCityCountry = cityCountry ? ' in ' + cityCountry : '';
+    var locHeart = locComma ? ' in the heart of ' + locComma : '';
+    var locHeart2 = locComma ? ' in ' + locComma : '';
+
+    document.title = name + (locComma ? ' | Luxury Salon in ' + locComma : ' | Luxury Beauty Salon');
+    setMeta('name="description"', name + ' — a premium beauty salon' + locSuffix + ' offering bridal makeup, party makeup, hair styling, hair color, facials & skin care. Book your luxury beauty experience today.');
+    setMeta('name="keywords"', name + ', Beauty Salon' + locSuffix + ', Bridal Makeup, Makeup Artist, Hair Salon, Facials, Skin Care');
+    setMeta('name="author"', name);
+    setMeta('property="og:site_name"', name);
+    setMeta('property="og:title"', name + (locComma ? ' | Luxury Salon in ' + locComma : ' | Luxury Beauty Salon'));
+    setMeta('property="og:description"', 'Luxury beauty, bridal artistry and personalized salon experiences' + locHeart2 + '.');
+    setMeta('name="twitter:title"', name + (locComma ? ' | ' + locComma : ''));
+    setMeta('name="twitter:description"', 'Luxury beauty, bridal artistry and personalized salon experiences' + locHeart2 + '.');
+
+    var pre = document.querySelector('.preloader-word');
+    if (pre) {
+      var preKids = pre.children;
+      if (preKids[0]) preKids[0].textContent = wordmark;
+      if (preKids[1]) preKids[1].textContent = sub;
+    }
+
+    var bw = document.querySelector('.brand-word');
+    if (bw) {
+      bw.innerHTML = (amp ? esc(line1) + '<span class="brand-amp" aria-hidden="true">&amp;</span>' + esc(line2) : esc(wordmark)) +
+        '<span class="brand-sub">' + esc(sub + (locLine ? ' • ' + locLine : '')) + '</span>';
+    }
+    var brandLink = document.querySelector('.brand');
+    if (brandLink) brandLink.setAttribute('aria-label', name + ' — home');
+
+    var hero = document.getElementById('home');
+    if (hero) hero.setAttribute('aria-label', 'Welcome to ' + name);
+
+    var hE = document.querySelector('.hero-eyebrow');
+    if (hE) hE.textContent = name;
+    var hS = document.querySelector('.hero-sub');
+    if (hS) hS.textContent = 'Luxury beauty, bridal artistry and personalized salon experiences' + locHeart + '.';
+    var hL = document.querySelector('.hero-location');
+    if (hL) {
+      if (locLine) { hL.innerHTML = '<span class="loc-dot" aria-hidden="true"></span>' + esc(locLine); hL.style.display = ''; }
+      else hL.style.display = 'none';
+    }
+
+    var trustArea = document.querySelector('.trust-item:nth-child(4) .trust-value');
+    var trustLoc = document.querySelector('.trust-item:nth-child(4) .trust-label');
+    if (trustArea && trustLoc) {
+      if (locComma) { trustArea.textContent = area || city; trustLoc.textContent = cityCountry; }
+      else { trustArea.textContent = 'Premium'; trustLoc.textContent = 'By Appointment Only'; }
+    }
+
+    var kicker = document.querySelector('.statement-kicker');
+    if (kicker) kicker.textContent = 'The ' + wordmark + ' Belief';
+    var sNote = document.querySelector('.statement-note');
+    if (sNote) sNote.innerHTML = 'Every appointment at our ' + (area ? area + ' ' : '') + 'atelier is built around this single idea<br class="br-desktop" /> — that beauty should move the way you do, and stay long after you leave.';
+
+    var aboutImg = document.querySelector('.about-media img');
+    if (aboutImg) aboutImg.setAttribute('alt', 'Interior of ' + name + ' beauty salon with warm elegant lighting');
+    var badge = document.querySelector('.media-badge');
+    var badgeText = badge && badge.querySelector('.badge-text');
+    if (badge) {
+      if (locComma) { if (badgeText) badgeText.innerHTML = esc(area) + (phase ? '<br />' + esc(phase) : ''); badge.style.display = ''; }
+      else badge.style.display = 'none';
+    }
+    var aboutIntro = document.querySelector('.about-copy .section-intro');
+    if (aboutIntro) aboutIntro.textContent = name + ' is a beauty salon' + locSuffix + ', built around one belief — that beauty should feel personal.';
+    var aboutCta = document.querySelector('.about-copy .btn-solid');
+    if (aboutCta) aboutCta.textContent = 'Discover ' + wordmark;
+
+    var stamp = document.querySelector('.bridal-stamp');
+    if (stamp) stamp.innerHTML = city ? 'Est.<br />' + esc(city) : 'Est.';
+    var bCap = document.querySelector('.bridal-caption');
+    if (bCap) {
+      if (locComma) bCap.textContent = 'Bridal Atelier — ' + locComma;
+      else bCap.textContent = 'Bridal Atelier';
+    }
+
+    var expTitle = document.querySelector('#experience .section-title');
+    if (expTitle) expTitle.innerHTML = 'The ' + esc(wordmark) + ' <em>Experience</em>';
+    var galIntro = document.querySelector('#gallery .section-intro');
+    if (galIntro) galIntro.textContent = 'A glimpse of the looks and moments crafted at ' + name + '.';
+    var revTitle = document.querySelector('#reviews .section-title');
+    if (revTitle) {
+      if (area) revTitle.innerHTML = 'Loved &amp; Trusted in<br /><em>' + esc(area) + '</em>';
+      else revTitle.innerHTML = 'Loved &amp; Trusted<br /><em>Everywhere</em>';
+    }
+    var apptSub = document.querySelector('.appointment-sub');
+    if (apptSub) apptSub.textContent = 'Book your appointment at ' + name + ' — by appointment only.';
+    var locTitle = document.querySelector('#contact .section-title');
+    if (locTitle) {
+      if (area) locTitle.innerHTML = 'Find Us in <em>' + esc(area) + '</em>';
+      else locTitle.innerHTML = 'Get in <em>Touch</em>';
+    }
+
+    var locName = document.querySelector('.loc-block-title');
+    if (locName) locName.textContent = name;
+    var addr = document.querySelector('.loc-address');
+    if (addr) {
+      var addrLines = [];
+      if (street) addrLines.push(esc(street));
+      if (areaPhase) addrLines.push(esc(areaPhase));
+      if (city || postal || country) addrLines.push(esc([city, postal, country].filter(Boolean).join(', ')));
+      addr.innerHTML = addrLines.join('<br />') + '<br /><a class="loc-phone" data-phone-label>' + esc(CFG.phoneDisplay || '') + '</a>';
+    }
+    var mapPanel = document.querySelector('.location-map');
+    if (mapPanel) mapPanel.style.display = hasLoc ? '' : 'none';
+    var mapLabel = document.querySelector('.map-label');
+    if (mapLabel) mapLabel.textContent = name;
+    var mapSub = document.querySelector('.map-sub');
+    if (mapSub) mapSub.textContent = fullStreet ? [fullStreet, city].filter(Boolean).join(', ') : '';
+    var mapLink = document.querySelector('.map-link');
+    if (mapLink) mapLink.style.display = CFG.mapsUrl ? '' : 'none';
+
+    var fw = document.querySelector('.footer-wordmark');
+    if (fw) {
+      var w1 = line1, w2 = line2;
+      if (!amp) { var parts = wordmark.split(' '); w1 = parts[0] || ''; w2 = parts[1] || ''; }
+      var fwLines = fw.querySelectorAll('.fw-line');
+      if (fwLines[0]) fwLines[0].textContent = w1;
+      if (fwLines[1]) fwLines[1].textContent = w2;
+      var fwAmp = fw.querySelector('.fw-amp');
+      if (fwAmp) fwAmp.textContent = amp ? '&' : '';
+      fw.setAttribute('aria-label', wordmark + ' — back to top');
+    }
+    var tagline = document.querySelector('.footer-tagline');
+    if (tagline) tagline.textContent = sub + (locLine ? ' • ' + locLine : '');
+    var fAddr = document.querySelector('.footer-address');
+    if (fAddr) {
+      var fLines = [];
+      if (street) fLines.push(esc(street));
+      if (areaPhase) fLines.push(esc(areaPhase));
+      if (city || postal) fLines.push(esc([city, postal].filter(Boolean).join(', ')));
+      fAddr.innerHTML = fLines.join('<br />');
+    }
+
+    var grand = document.querySelector('.footer-grandword');
+    if (grand) {
+      grand.innerHTML = amp ? esc(line1) + ' <em aria-hidden="true">&amp;</em> ' + esc(line2) : esc(wordmark);
+      grand.setAttribute('aria-label', wordmark + ' — back to top');
+    }
+    var colophon = document.querySelector('.footer-colophon > span');
+    if (colophon) colophon.textContent = '© ' + new Date().getFullYear() + ' ' + name + '. All rights reserved.';
+
+    var ld = document.querySelector('script[type="application/ld+json"]');
+    if (ld) {
+      try {
+        var data = JSON.parse(ld.textContent);
+        if (data && data['@type']) {
+          data.name = name;
+          data.description = 'Premium beauty salon' + locSuffix + ' offering bridal makeup, party makeup, hair styling, hair color, facials, skin care and hair treatments.';
+          if (hasLoc && data.address) {
+            data.address.streetAddress = fullStreet;
+            data.address.addressLocality = city;
+            data.address.postalCode = postal;
+          } else if (data.address) {
+            delete data.address.streetAddress;
+            delete data.address.addressLocality;
+            delete data.address.postalCode;
+          }
+          data.areaServed = L.areaServed || city || '';
+          data.telephone = CFG.phone || data.telephone;
+          ld.textContent = JSON.stringify(data);
+        }
+      } catch (e) { /* leave static JSON-LD as fallback */ }
     }
   }
 
@@ -679,7 +883,7 @@
       e.preventDefault();
       if (!form.reportValidity()) return;
       if (!CFG.whatsapp) return;
-      var parts = [CFG.bookingGreeting || 'Hello Glitz & Glam!'];
+      var parts = [CFG.bookingGreeting || 'Hello! I would like to book an appointment.'];
       parts.push('Service: ' + (svcField.value || '—'));
       parts.push('Date: ' + (dateField.value || '—'));
       parts.push('Time: ' + (timeField.value || '—'));
@@ -719,4 +923,8 @@
 
   /* ---------- Init ---------- */
   applyConfig();
+
+  /* Runtime rebrand helper — edit window.GLAZ then call
+     GLAZ.applyBrand() to re-apply brand + location (no reload). */
+  if (window.GLAZ) window.GLAZ.applyBrand = applyBrand;
 })();

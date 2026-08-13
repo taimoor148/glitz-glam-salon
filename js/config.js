@@ -1,30 +1,59 @@
 /* ============================================================
-   GLITZ & GLAM BEAUTY SALON — CENTRAL BUSINESS CONFIGURATION
+   BEAUTY SALON — CENTRAL BUSINESS CONFIGURATION
    ------------------------------------------------------------
-   Edit everything business-related in ONE place.
+   DEMO TEMPLATE — every business detail is edited in ONE place.
+   To brand this site for a real salon, change the values below
+   (brand, location, phone, WhatsApp, social, hours, prices).
 
    • whatsapp  : country code + number, WITHOUT "+", "00" or spaces.
    • phone     : full international number for tel: links.
    • phoneDisplay : the number as shown to visitors.
+   • instagram / facebook : full profile URLs.
+   • mapsUrl   : link used by "Open in Google Maps".
+   • brand     : wordmark + business name (demo placeholders).
+   • location  : address + area served (demo placeholders).
    • openingHours : shown in the Contact section (keep true salon hours).
    • hoursNote    : small line under the hours list.
    • rating / reviewCount : Google review data used in Trust strip + Reviews.
    • prices       : shown in "Menu & Prices" (cat = category chip name).
-                   RATES BELOW ARE SAMPLE PLACEHOLDERS — confirm with the salon.
+                    RATES BELOW ARE SAMPLE PLACEHOLDERS — confirm with the salon.
    • timeSlots    : Book button → WhatsApp form slot choices.
    • siteUrl    : real production domain. Leave EMPTY ('') until the real
                   domain is known — canonical & og:url are then skipped so
                   no fake domain ships to production.
    ============================================================ */
 var GLAZ = {
-  whatsapp: '923000000000',                          // TODO: replace with real WhatsApp number
-  whatsappMessage: 'Hello Glitz & Glam, I would like to book an appointment.',
-  phone: '+923000000000',                            // TODO: replace with real salon phone
-  phoneDisplay: '+92 300 0000000',                   // TODO: replace with real salon phone
+  whatsapp: '920000000000',                          // TODO: replace with real WhatsApp number
+  whatsappMessage: 'Hello! I would like to book an appointment.',
+  phone: '+920000000000',                            // TODO: replace with real salon phone
+  phoneDisplay: '+92 000 0000000',                   // TODO: replace with real salon phone
   instagram: 'https://instagram.com/',               // TODO: replace with real profile URL
   facebook: 'https://facebook.com/',                 // TODO: replace with real profile URL
-  mapsUrl: 'https://www.google.com/maps/search/?api=1&query=WAPDA+Town+Phase+1,+Lahore,+Pakistan',
+  mapsUrl: '',                                       // Google Maps link for the "Open in Google Maps" button (empty = hidden)
   siteUrl: '',                                       // e.g. 'https://www.your-domain.com'
+
+  /* ---- BRAND (demo name — replace for each salon) ---- */
+  brand: {
+    line1: 'Luxe',            // first word of the wordmark
+    line2: 'Bloom',           // second word of the wordmark
+    amp: true,                // true to show "&" between the two words
+    name: 'Luxe & Bloom Beauty Salon',  // full business name (title / SEO / footer)
+    wordmark: 'Luxe & Bloom', // short wordmark used in buttons & aria-labels
+    sub: 'Beauty Salon'       // tagline under the wordmark
+  },
+
+  /* ---- LOCATION (LEAVE ALL EMPTY for the generic demo.
+     Fill in per salon to show address / area / map. ---- */
+  location: {
+    area: '',            // neighbourhood, e.g. "WAPDA Town"
+    areaPhase: '',       // fuller area line, e.g. "WAPDA Town Phase 1"
+    city: '',            // e.g. "Lahore"
+    country: '',         // e.g. "Pakistan"
+    postal: '',          // e.g. "54000"
+    street: '',          // e.g. "House No. 12, Block H2"
+    areaServed: ''       // e.g. "Lahore"
+  },
+
   openingHours: [
     { label: 'Monday — Saturday', value: '10:00 AM — 9:00 PM' },
     { label: 'Sunday',            value: '12:00 PM — 7:00 PM' }
@@ -53,5 +82,5 @@ var GLAZ = {
   timeSlots: ['10:00 AM', '11:30 AM', '1:00 PM', '3:00 PM', '4:30 PM', '6:00 PM', '7:30 PM'],
 
   /* Booking message starts with this greeting; service/date/time are appended. */
-  bookingGreeting: 'Hello Glitz & Glam! I would like to book an appointment.'
+  bookingGreeting: 'Hello! I would like to book an appointment.'
 };
