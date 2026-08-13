@@ -108,6 +108,35 @@
   }
   initToTop();
 
+  /* ---------- 3b. Physics press (HyperFrames: physics-press-reaction) ----------
+     A tactile squeeze on press and a springy overshoot on release. GSAP reads
+     any existing transforms (e.g. the arrow's translateY(-50%)) and keeps them
+     intact while tweening scale — transform-only, deterministic, gated.        */
+  function initPress() {
+    if (reduceMotion || typeof window.gsap === 'undefined') return;
+    var targets = Array.prototype.slice.call(document.querySelectorAll(
+      '.pf-card, .svc-row, .carousel-arrow, .carousel-dot, .pf-filter-btn, .svc-filter-btn, [data-scroll-to], .to-top'
+    ));
+    if (!targets.length) return;
+
+    targets.forEach(function (el) {
+      var down = false;
+      el.addEventListener('pointerdown', function () {
+        down = true;
+        gsap.to(el, { scale: 0.97, duration: 0.12, ease: 'power1.in', overwrite: 'auto' });
+      });
+      function lift() {
+        if (!down) return;
+        down = false;
+        gsap.to(el, { scale: 1, duration: 0.55, ease: 'back.out(1.8)', overwrite: 'auto' });
+      }
+      el.addEventListener('pointerup', lift);
+      el.addEventListener('pointerleave', lift);
+      el.addEventListener('pointercancel', lift);
+    });
+  }
+  initPress();
+
   /* ---------- 4. Portfolio 3D tilt ---------- */
   function initTilt() {
     if (reduceMotion || !finePointer || typeof window.gsap === 'undefined') return;
