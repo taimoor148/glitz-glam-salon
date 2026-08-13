@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>QA</title>
+<style>
+  html,body{margin:0;background:#111;color:#eee;font:12px/1.5 monospace;overflow:hidden}
+  #out{white-space:pre-wrap;padding:8px;max-height:46vh;overflow:auto}
+  #f{width:320px;height:700px;display:block;border:1px solid #444;margin:8px}
+</style>
+</head>
+<body>
+<pre id="out">pending</pre>
+<iframe id="f" src="index.html" style="width:320px;height:700px"></iframe>
+<script>
+var out = document.getElementById('out');
+var f = document.getElementById('f');
+var widths = [320, 360, 375, 390, 414, 640, 768];
+function log(s){ if(out.textContent==='pending') out.textContent=''; out.textContent += '\n' + s; }
+function sleep(ms){ return new Promise(function(r){ setTimeout(r, ms); }); }
+
+function ancestorsOf(el, d){
+  var anc = [], n = el.parentElement;
+  while (n && n !== d.documentElement) { anc.push(n); n = n.parentElement; }
+  return anc;
+}
+
+function meas(w){
+  return new Promise(function(resolve){
+    f.style.width = w + 'px';
+    f.style.height = Math.max(640, Math.round(w * 1.6)) + 'px';
+    setTimeout(function(){
+      var d, dd, cw, sw;
+      try { d = f.contentDocument; dd = d.documentElement; cw = dd.clientWidth; sw = dd.scrollWidth; }
+      catch(e){ log(w + 'px: ERR iframe access ' + e.message); return resolve(); }
+
+      var issues = [];
+      if (sw > cw + 1) issues.push('doc-overflow ' + sw + '/' + cw);
+
+      var vw = d.documentElement.clientWidth;
+      var all = d.querySelectorAll('body *');
+      for (var i = 0; i < all.length; i++){
+        var el = all[i];
+        var rc = el.getClientRects();
+        if (!rc || !rc.length) continue;
+        if (rc.length > 1) continue;
+        var cs = d.defaultView.getComputedStyle(el);
+        if (cs.display === 'none' || cs.visibility === 'hidden' || parseFloat(cs.opacity) === 0) continue;
+        if (cs.position === 'fixed') continue;
+        var r = el.getBoundingClientRect();
+        if ((r.right > vw + 1 || r.left < -1) && (r.width > 2 && r.height > 2)){
+          // skip elements inside a scrollable/hidden-overflow ancestor (filter pills)
+          var scrollIn = ancestorsOf(el, d).some(function(a){
+            var ac = d.defaultView.getComputedStyle(a);
+            return ac.overflowX === 'auto' || ac.overflowX === 'scroll' || ac.overflowX === 'hidden';
+          });
+          if (scrollIn) continue;
+          var id = el.id ? '#' + el.id : '';
+          var cls = (el.className && typeof el.className === 'string') ? '.' + el.className.trim().split(/\s+/).join('.') : '';
+          var t = el.tagName.toLowerCase() + id + cls;
+          issues.push(t.slice(0, 110) + ' r=' + Math.round(r.right) + ' l=' + Math.round(r.left));
+        }
+      }
+
+      var menu = '';
+      try {
+        var n = d.getElementById('siteNav');
+        var t = d.getElementById('navToggle');
+        if (t && n){
+          t.click();
+          setTimeout(function(){
+            var nsw = dd.scrollWidth, ncw = dd.clientWidth;
+            menu = n.classList.contains('is-open') ? 'open-ok' + (nsw > ncw + 1 ? ' BUT-overflow ' + nsw + '/' + ncw : '') : 'open-FAIL';
+            t.click();
+          }, 0);
+        } else menu = 'no-toggle';
+      } catch(e){ menu = 'menu-err ' + e.message; }
+
+      setTimeout(function(){
+        log(w + 'px | ' + (issues.length ? issues.slice(0, 16).join(' | ') : 'OK') + ' | ' + menu);
+
+        // tap targets
+        if (w === 375){
+          var mins = [];
+          var els = d.querySelectorAll('.btn, .svc-arrow, .pf-filter-btn, .svc-filter-btn, .social-link, .map-link, .wa-float');
+          for (var j = 0; j < els.length; j++){
+            var rect = els[j].getBoundingClientRect();
+            if (rect.width && rect.height && (rect.height < 44 || rect.width < 44)){
+              var c2 = els[j].className || '';
+              mins.push(c2.split(' ')[0] + ' ' + Math.round(rect.width) + 'x' + Math.round(rect.height));
+            }
+          }
+          log('tap<44: ' + (mins.length ? mins.slice(0, 12).join(', ') : 'none'));
+        }
+        resolve();
+      }, 500);
+    }, 600);
+  });
+}
+
+(async function(){
+  await sleep(2600); // let preloader + fonts settle
+  for (var i = 0; i < widths.length; i++){ await meas(widths[i]); }
+  log('DONE');
+})();
+</script>
+</body>
+</html>

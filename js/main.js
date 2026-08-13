@@ -5,42 +5,84 @@
   'use strict';
 
   /* ---------- CENTRAL CONFIG ----------
-     Change contact details in one place below.
-     whatsapp: international code + number WITHOUT "+", "00" or spaces.
-     phone:    full international number for tel: links.
-     phoneDisplay: how the number is shown to visitors.            */
-  var CONFIG = {
-    whatsapp: '923000000000',                 // TODO: replace with real WhatsApp number
-    whatsappMessage: 'Hello Glitz & Glam, I would like to book an appointment.',
-    phone: '+923000000000',                   // TODO: replace with real salon phone
-    phoneDisplay: '+92 300 0000000',          // TODO: replace with real salon phone
-    instagram: 'https://instagram.com/',      // TODO: replace with real profile
-    facebook: 'https://facebook.com/',        // TODO: replace with real profile
-    mapsUrl: 'https://www.google.com/maps/search/?api=1&query=WAPDA+Town+Phase+1,+Lahore,+Pakistan'
-  };
+     All business data lives in js/config.js (window.GLAZ).
+     Phone, WhatsApp, Instagram, Facebook, maps URL, opening hours,
+     review rating/count and the production site URL are all edited there. */
+  var CFG = window.GLAZ || {};
 
   var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
 
-  /* ---------- 1. Apply contact configuration ---------- */
+  function esc(str) {
+    return String(str == null ? '' : str)
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+  }
+
+  /* ---------- 1. Apply business configuration ---------- */
   function applyConfig() {
-    var waHref = 'https://wa.me/' + CONFIG.whatsapp + '?text=' + encodeURIComponent(CONFIG.whatsappMessage);
+    if (!CFG || !CFG.whatsapp) return;
+
+    var waHref = 'https://wa.me/' + CFG.whatsapp + '?text=' + encodeURIComponent(CFG.whatsappMessage || '');
     document.querySelectorAll('[data-wa]').forEach(function (a) {
       a.setAttribute('href', waHref);
     });
     document.querySelectorAll('[data-phone]').forEach(function (a) {
-      a.setAttribute('href', 'tel:' + CONFIG.phone);
+      a.setAttribute('href', 'tel:' + CFG.phone);
     });
     document.querySelectorAll('[data-phone-label]').forEach(function (el) {
-      el.textContent = CONFIG.phoneDisplay;
-      el.setAttribute('href', 'tel:' + CONFIG.phone);
+      el.textContent = CFG.phoneDisplay;
+      el.setAttribute('href', 'tel:' + CFG.phone);
     });
     document.querySelectorAll('[data-instagram]').forEach(function (a) {
-      a.setAttribute('href', CONFIG.instagram);
+      a.setAttribute('href', CFG.instagram);
     });
     document.querySelectorAll('[data-facebook]').forEach(function (a) {
-      a.setAttribute('href', CONFIG.facebook);
+      a.setAttribute('href', CFG.facebook);
     });
+    document.querySelectorAll('[data-map-link]').forEach(function (a) {
+      a.setAttribute('href', CFG.mapsUrl);
+    });
+
+    /* Opening hours — rendered from config */
+    var hoursList = document.querySelector('[data-hours-list]');
+    if (hoursList && CFG.openingHours && CFG.openingHours.length) {
+      hoursList.innerHTML = CFG.openingHours.map(function (h) {
+        return '<li><span>' + esc(h.label) + '</span><span>' + esc(h.value) + '</span></li>';
+      }).join('');
+    }
+    var hoursNote = document.querySelector('[data-hours-note]');
+    if (hoursNote && CFG.hoursNote) hoursNote.textContent = CFG.hoursNote;
+
+    /* Review rating / count — from config */
+    if (CFG.rating) {
+      document.querySelectorAll('[data-count][data-dec]').forEach(function (el) {
+        el.setAttribute('data-count', CFG.rating);
+      });
+    }
+    if (CFG.reviewCount) {
+      document.querySelectorAll('[data-reviews]').forEach(function (el) {
+        el.setAttribute('data-count', CFG.reviewCount);
+      });
+    }
+
+    /* Canonical + og:url — only once a real domain is configured */
+    if (CFG.siteUrl) {
+      var existing = document.querySelector('link[rel="canonical"]');
+      if (!existing) {
+        existing = document.createElement('link');
+        existing.setAttribute('rel', 'canonical');
+        document.head.appendChild(existing);
+      }
+      existing.setAttribute('href', CFG.siteUrl);
+      var og = document.querySelector('meta[property="og:url"]');
+      if (!og) {
+        og = document.createElement('meta');
+        og.setAttribute('property', 'og:url');
+        document.head.appendChild(og);
+      }
+      og.setAttribute('content', CFG.siteUrl);
+    }
   }
 
   /* ---------- 2. Header scroll state ---------- */
@@ -81,8 +123,14 @@
     });
   }
 
-  /* ---------- 4. Scroll reveal ---------- */
-  var revealEls = document.querySelectorAll('.reveal, .reveal-up, .hero .eyebrow, .hero .t-line');
+  /* ---------- 4. Scroll reveal ----------
+     The hero entrance is choreographed by js/animation.js (HyperFrames
+     load treatment) so it reveals AFTER the preloader clears instead of
+     firing immediately through this scroller. */
+  var revealEls = Array.prototype.filter.call(
+    document.querySelectorAll('.reveal, .reveal-up'),
+    function (el) { return !el.closest('.hero'); }
+  );
 
   revealEls.forEach(function (el) {
     var d = parseFloat(el.getAttribute('data-delay') || 0);
@@ -103,7 +151,7 @@
     revealEls.forEach(function (el) { el.classList.add('in'); });
   }
 
-  /* ---------- 5. Counters ---------- */
+  /* ---------- 5. Counters (HyperFrames: counting-dynamic-scale) ---------- */
   function animateCount(el) {
     var target = parseFloat(el.getAttribute('data-count'));
     var decimals = parseInt(el.getAttribute('data-dec') || 0, 10);
@@ -111,6 +159,8 @@
     if (isNaN(target)) return;
     if (reduceMotion) { el.textContent = target.toLocaleString(undefined, { minimumFractionDigits: decimals, maximumFractionDigits: decimals }); return; }
 
+    /* the number's transform scale grows as the value climbs, then settles */
+    el.classList.add('is-counting');
     var duration = 1800;
     var start = null;
     function step(ts) {
@@ -119,7 +169,10 @@
       var eased = 1 - Math.pow(1 - p, 3);
       var val = target * eased;
       el.textContent = prefix + val.toLocaleString(undefined, { minimumFractionDigits: decimals, maximumFractionDigits: decimals });
+      var grow = 1 + 0.1 * eased;
+      el.style.transform = 'scale(' + grow.toFixed(3) + ')';
       if (p < 1) requestAnimationFrame(step);
+      else { el.style.transform = ''; el.classList.remove('is-counting'); }
     }
     requestAnimationFrame(step);
   }
@@ -267,6 +320,18 @@
       if (e.key === 'ArrowRight') { go(current + 1); restart(); }
     });
 
+    /* touch swipe */
+    var startX = null;
+    carousel.addEventListener('touchstart', function (e) {
+      startX = e.touches[0].clientX;
+    }, { passive: true });
+    carousel.addEventListener('touchend', function (e) {
+      if (startX === null) return;
+      var dx = e.changedTouches[0].clientX - startX;
+      if (Math.abs(dx) > 48) { go(current + (dx < 0 ? 1 : -1)); restart(); }
+      startX = null;
+    }, { passive: true });
+
     go(0);
     auto();
   }
@@ -279,19 +344,38 @@
     var cards = Array.prototype.slice.call(grid.querySelectorAll(cardSel));
 
     var filter = 'all';
+    var TRANSITION = 240;
+
+    function settle() {
+      cards.forEach(function (card) {
+        if (!card.classList.contains('is-hiding') && !card.classList.contains('in')) {
+          card.classList.add('in');
+        }
+        card.classList.remove('is-fading');
+      });
+    }
+
     function apply() {
+      var leaving = [];
       cards.forEach(function (card) {
         var match = filter === 'all' || card.getAttribute('data-cat') === filter;
-        card.classList.toggle('is-hiding', !match);
+        if (match && card.classList.contains('is-hiding')) {
+          card.classList.remove('is-hiding');
+          card.classList.add('is-fading');
+        } else if (!match && !card.classList.contains('is-hiding')) {
+          card.classList.add('is-fading');
+          leaving.push(card);
+        }
       });
-      // restore reveal state so freshly-shown cards animate in
-      if ('IntersectionObserver' in window && !reduceMotion) {
-        cards.forEach(function (card) {
-          if (!card.classList.contains('is-hiding') && !card.classList.contains('in')) {
-            card.classList.add('in');
-          }
-        });
+      if (reduceMotion) {
+        leaving.forEach(function (c) { c.classList.add('is-hiding'); });
+        settle();
+        return;
       }
+      window.setTimeout(function () {
+        leaving.forEach(function (card) { card.classList.add('is-hiding'); });
+        settle();
+      }, TRANSITION);
     }
 
     btns.forEach(function (btn) {
@@ -310,7 +394,16 @@
     apply();
   }
   initFilter(document.querySelector('[data-filter-bar]'), document.querySelector('[data-portfolio-grid]'), '.pf-card');
-  initFilter(document.querySelector('[data-services-filter]'), document.querySelector('.service-grid'), '.service-card');
+  initFilter(document.querySelector('[data-services-filter]'), document.querySelector('.service-menu'), '.svc-row');
+
+  /* ---------- 11b. Service rows tap to book (mobile) ---------- */
+  document.querySelectorAll('.svc-row').forEach(function (row) {
+    row.addEventListener('click', function (e) {
+      if (e.target.closest('a')) return;
+      var link = row.querySelector('.svc-arrow');
+      if (link && link.getAttribute('href')) window.location.href = link.getAttribute('href');
+    });
+  });
 
   /* ---------- 12. Lightbox ---------- */
   function initLightbox() {
@@ -321,6 +414,7 @@
     var closeBtn = lb.querySelector('[data-lightbox-close]');
     var prevBtn = lb.querySelector('[data-lightbox-prev]');
     var nextBtn = lb.querySelector('[data-lightbox-next]');
+    var counter = lb.querySelector('[data-lightbox-count]');
 
     var items = [];
     var current = -1;
@@ -346,6 +440,7 @@
       img.setAttribute('src', item.src);
       img.setAttribute('alt', item.title);
       caption.textContent = item.title;
+      if (counter) counter.textContent = (current + 1) + ' / ' + items.length;
       lb.classList.add('is-open');
       lb.classList.remove('is-ready');
       document.body.style.overflow = 'hidden';
@@ -382,17 +477,46 @@
     }
 
     if (closeBtn) closeBtn.addEventListener('click', close);
-    if (prevBtn) prevBtn.addEventListener('click', function () { open(current - 1); });
-    if (nextBtn) nextBtn.addEventListener('click', function () { open(current + 1); });
     lb.addEventListener('click', function (e) { if (e.target === lb) close(); });
+
+    img.addEventListener('load', show);
+
+    /* preload neighbouring images for glide-free navigation */
+    function preload(src) {
+      if (!src) return;
+      var i = new Image();
+      i.src = src;
+    }
+
+    /* touch swipe navigation (mobile) */
+    var lbStart = null;
+    lb.addEventListener('touchstart', function (e) {
+      lbStart = e.touches[0].clientX;
+    }, { passive: true });
+    lb.addEventListener('touchend', function (e) {
+      if (lbStart === null || !lb.classList.contains('is-open')) return;
+      var dx = e.changedTouches[0].clientX - lbStart;
+      if (Math.abs(dx) > 48) {
+        var n = current + (dx < 0 ? 1 : -1);
+        preload(items[(n + 1) % items.length] && items[(n + 1) % items.length].src);
+        open(n);
+      }
+      lbStart = null;
+    }, { passive: true });
+
+    var _open = open;
+    function openWithPreload(index) {
+      preload(items[(index + 1) % items.length] && items[(index + 1) % items.length].src);
+      _open(index);
+    }
+    if (prevBtn) prevBtn.addEventListener('click', function () { openWithPreload(current - 1); });
+    if (nextBtn) nextBtn.addEventListener('click', function () { openWithPreload(current + 1); });
     document.addEventListener('keydown', function (e) {
       if (!lb.classList.contains('is-open')) return;
       if (e.key === 'Escape') close();
-      if (e.key === 'ArrowLeft') open(current - 1);
-      if (e.key === 'ArrowRight') open(current + 1);
+      if (e.key === 'ArrowLeft') openWithPreload(current - 1);
+      if (e.key === 'ArrowRight') openWithPreload(current + 1);
     });
-
-    img.addEventListener('load', show);
   }
   initLightbox();
 

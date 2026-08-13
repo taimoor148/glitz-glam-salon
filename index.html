@@ -11,7 +11,8 @@
   <meta name="keywords" content="Glitz and Glam Beauty Salon Lahore, Beauty Salon in WAPDA Town, Beauty Salon WAPDA Town Lahore, Bridal Makeup Lahore, Makeup Artist Lahore, Hair Salon WAPDA Town, Bridal Makeup WAPDA Town" />
   <meta name="author" content="Glitz & Glam Beauty Salon" />
   <meta name="robots" content="index, follow" />
-  <link rel="canonical" href="https://glitzandglam.example.com/" />
+  <!-- canonical + og:url are injected from js/config.js (GLAZ.siteUrl).
+       No placeholder domain ships until the real domain is configured there. -->
 
   <!-- Open Graph -->
   <meta property="og:type" content="website" />
@@ -19,7 +20,6 @@
   <meta property="og:title" content="Glitz & Glam Beauty Salon | Luxury Salon in WAPDA Town, Lahore" />
   <meta property="og:description" content="Luxury beauty, bridal artistry and personalized salon experiences in the heart of WAPDA Town, Lahore." />
   <meta property="og:image" content="assets/img/og-bridal.jpg" />
-  <meta property="og:url" content="https://glitzandglam.example.com/" />
   <meta property="og:locale" content="en_PK" />
 
   <!-- Twitter -->
@@ -37,6 +37,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet" />
 
   <link rel="stylesheet" href="css/styles.css" />
+  <script>document.documentElement.classList.add('js');</script>
 
   <!-- Structured data -->
   <script type="application/ld+json">
@@ -63,11 +64,27 @@
 
   <a class="skip-link" href="#main">Skip to content</a>
 
+  <!-- Preloader -->
+  <div class="preloader" aria-hidden="true">
+    <img src="assets/logo-mark.svg" alt="" width="64" height="64" />
+    <span class="preloader-line"></span>
+  </div>
+
+  <!-- Scroll progress -->
+  <div class="scroll-progress" data-scroll-progress aria-hidden="true"></div>
+
+  <!-- Custom cursor (desktop) -->
+  <div class="cursor" aria-hidden="true">
+    <span class="cursor-dot" data-cursor-dot></span>
+    <span class="cursor-ring" data-cursor-ring></span>
+  </div>
+
   <!-- ============ NAVIGATION ============ -->
   <header class="site-header" id="siteHeader">
     <div class="nav-inner">
       <a class="brand" href="#home" aria-label="Glitz &amp; Glam Beauty Salon — home">
-        <span class="brand-word">Glitz&nbsp;&amp;&nbsp;Glam<span class="brand-sub">Beauty Salon • WAPDA Town</span></span>
+        <img class="brand-mark" src="assets/logo-mark.svg" alt="" width="42" height="42" />
+        <span class="brand-word">Glitz<span class="brand-amp" aria-hidden="true">&amp;</span>Glam<span class="brand-sub">Beauty Salon • WAPDA Town</span></span>
       </a>
 
       <nav class="site-nav" id="siteNav" aria-label="Primary">
@@ -95,9 +112,10 @@
     <!-- ============ HERO ============ -->
     <section class="hero" id="home" aria-label="Welcome to Glitz & Glam Beauty Salon">
       <div class="hero-media" data-parallax="0.22" aria-hidden="true">
-        <img src="assets/img/hero-bride-wide.jpg" alt="Elegant South Asian bride in traditional red attire with bridal jewelry and henna, seated in a warm, elegant setting" />
+        <img src="assets/img/hero-bride-wide.jpg" width="1920" height="1231" fetchpriority="high" decoding="async" alt="Elegant South Asian bride in traditional red attire with bridal jewelry and henna, seated in a warm, elegant setting" />
       </div>
       <div class="hero-scrim" aria-hidden="true"></div>
+      <div class="hero-glow" aria-hidden="true"></div>
 
       <svg class="hero-orn hero-orn--tl" viewBox="0 0 120 120" fill="none" aria-hidden="true">
         <path d="M8 112V76C8 40 40 8 76 8h36" stroke="currentColor" stroke-width="1"/>
@@ -115,6 +133,9 @@
       <svg class="hero-sparkle hero-sparkle--2" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l2.2 7.8L22 12l-7.8 2.2L12 22l-2.2-7.8L2 12l7.8-2.2z" fill="currentColor"/></svg>
       <svg class="hero-sparkle hero-sparkle--3" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l2.2 7.8L22 12l-7.8 2.2L12 22l-2.2-7.8L2 12l7.8-2.2z" fill="currentColor"/></svg>
 
+      <span class="hero-index" aria-hidden="true">No. 01 — Editorial</span>
+      <span class="hero-side" aria-hidden="true">Luxury Beauty &nbsp;•&nbsp; Bridal Atelier</span>
+
       <div class="hero-content container">
         <p class="eyebrow hero-eyebrow reveal-up" data-delay="0">Glitz&nbsp;&amp;&nbsp;Glam Beauty Salon</p>
         <h1 class="hero-title">
@@ -130,6 +151,7 @@
           <span class="hero-location">
             <span class="loc-dot" aria-hidden="true"></span>WAPDA Town&nbsp;•&nbsp;Lahore
           </span>
+          <span class="hero-caption" aria-hidden="true">Bridal artistry &amp; considered beauty — by appointment only.</span>
         </div>
       </div>
 
@@ -147,7 +169,7 @@
           <p class="trust-label">Google Rating</p>
         </div>
         <div class="trust-item">
-          <p class="trust-value"><span data-count="2200">0</span>+</p>
+          <p class="trust-value"><span data-count="2200" data-reviews>2200</span>+</p>
           <p class="trust-label">Client Reviews</p>
         </div>
         <div class="trust-item">
@@ -161,15 +183,53 @@
       </div>
     </section>
 
+    <!-- ============ SERVICES MARQUEE ============ -->
+    <section class="marquee" aria-label="Signature services ticker" aria-hidden="true">
+      <div class="marquee-track">
+        <div class="marquee-band">
+          <span>Bridal Makeup</span><span class="mq-sep" aria-hidden="true">✦</span>
+          <span>Hair Artistry</span><span class="mq-sep" aria-hidden="true">✦</span>
+          <span>Skin &amp; Spa</span><span class="mq-sep" aria-hidden="true">✦</span>
+          <span>Party Glam</span><span class="mq-sep" aria-hidden="true">✦</span>
+          <span>Balayage &amp; Tone</span><span class="mq-sep" aria-hidden="true">✦</span>
+          <span>Facials</span><span class="mq-sep" aria-hidden="true">✦</span>
+        </div>
+        <div class="marquee-band" aria-hidden="true">
+          <span>Bridal Makeup</span><span class="mq-sep" aria-hidden="true">✦</span>
+          <span>Hair Artistry</span><span class="mq-sep" aria-hidden="true">✦</span>
+          <span>Skin &amp; Spa</span><span class="mq-sep" aria-hidden="true">✦</span>
+          <span>Party Glam</span><span class="mq-sep" aria-hidden="true">✦</span>
+          <span>Balayage &amp; Tone</span><span class="mq-sep" aria-hidden="true">✦</span>
+          <span>Facials</span><span class="mq-sep" aria-hidden="true">✦</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ BRAND STATEMENT ============ -->
+    <section class="statement" aria-label="Brand statement">
+      <div class="container statement-inner">
+        <p class="statement-kicker reveal-up">The Glitz &amp; Glam Belief</p>
+        <h2 class="statement-title reveal-up" data-delay="1">
+          <span class="st-line">Beauty is not a look.</span>
+          <span class="st-line">It's how you feel when</span>
+          <span class="st-line">you become <em>unforgettable.</em></span>
+        </h2>
+        <p class="statement-note reveal-up" data-delay="2">
+          Every appointment at our WAPDA Town atelier is built around this single idea<br class="br-desktop" />
+          — that beauty should move the way you do, and stay long after you leave.
+        </p>
+      </div>
+    </section>
+
     <!-- ============ ABOUT ============ -->
     <section class="section about" id="about">
       <div class="container about-grid">
         <div class="about-media reveal" data-parallax="0.08">
           <figure class="media-frame">
-            <img src="assets/img/about-interior.jpg" alt="Interior of Glitz & Glam beauty salon with warm elegant lighting" />
+            <img src="assets/img/about-interior.jpg" width="1400" height="925" loading="lazy" decoding="async" alt="Interior of Glitz & Glam beauty salon with warm elegant lighting" />
           </figure>
           <figure class="media-frame media-frame--small reveal" data-delay="2">
-            <img src="assets/img/about-detail.jpg" alt="Stylish vanity mirror and chair inside the salon" />
+            <img src="assets/img/about-detail.jpg" width="900" height="1288" loading="lazy" decoding="async" alt="Stylish vanity mirror and chair inside the salon" />
           </figure>
           <div class="media-badge reveal" data-delay="3">
             <span class="badge-orn" aria-hidden="true">✦</span>
@@ -239,176 +299,114 @@
           <button class="svc-filter-btn" type="button" role="tab" data-filter="skin" aria-selected="false">Skin &amp; Spa</button>
         </div>
 
-        <div class="service-grid">
-          <!-- Featured flagship card -->
-          <article class="service-card service-card--feat reveal" data-cat="bridal">
-            <div class="service-media">
-              <img src="assets/img/service-bridal-makeup.jpg" alt="Smiling bride wearing traditional jewelry and bridal makeup" loading="lazy" />
-              <span class="service-num" aria-hidden="true">01</span>
-              <span class="service-chip">Signature Service</span>
+        <!-- Editorial service menu -->
+        <div class="service-menu">
+          <article class="svc-row reveal" data-cat="bridal">
+            <span class="svc-num" aria-hidden="true">01</span>
+            <div class="svc-body">
+              <span class="svc-cat">Bridal</span>
+              <h3 class="svc-name"><a href="#contact">Bridal Makeup</a></h3>
+              <p class="svc-desc">Editorial-grade bridal artistry crafted around your features, your dress and your day.</p>
             </div>
-            <div class="service-body">
-              <span class="service-cat">Bridal</span>
-              <h3 class="service-name">Bridal Makeup</h3>
-              <p class="service-desc">Editorial-grade bridal artistry crafted around your features, your dress and your day.</p>
-              <ul class="service-feats">
-                <li>Bridal trial &amp; detailed consultation</li>
-                <li>Bridal, maang-tikka &amp; dupatta styling</li>
-                <li>Flawless, long-wear finish for every function</li>
-              </ul>
-              <div class="service-foot">
-                <a href="#contact" class="service-link" data-magnetic>Book This Service
-                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                </a>
-                <span class="service-meta">By appointment</span>
-              </div>
-            </div>
+            <a class="svc-arrow" href="#contact" aria-label="Book Bridal Makeup" data-magnetic>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+            <figure class="svc-media" aria-hidden="true"><img src="assets/img/service-bridal-makeup.jpg" width="1000" height="1498" alt="" loading="lazy" decoding="async" /></figure>
           </article>
 
-          <article class="service-card reveal" data-delay="1" data-cat="makeup">
-            <div class="service-media">
-              <img src="assets/img/service-party-makeup.jpg" alt="Professional makeup artist applying makeup to a client for an event" loading="lazy" />
-              <span class="service-num" aria-hidden="true">02</span>
+          <article class="svc-row reveal" data-delay="1" data-cat="makeup">
+            <span class="svc-num" aria-hidden="true">02</span>
+            <div class="svc-body">
+              <span class="svc-cat">Makeup</span>
+              <h3 class="svc-name"><a href="#contact">Party &amp; Event Makeup</a></h3>
+              <p class="svc-desc">Glowing, occasion-ready looks for evenings, functions and celebrations of every kind.</p>
             </div>
-            <div class="service-body">
-              <span class="service-cat">Makeup</span>
-              <h3 class="service-name">Party &amp; Event Makeup</h3>
-              <p class="service-desc">Glowing, occasion-ready looks for evenings, functions and celebrations of every kind.</p>
-              <ul class="service-feats">
-                <li>Evening &amp; event-ready looks</li>
-                <li>Lasts from entrance to late</li>
-              </ul>
-              <div class="service-foot">
-                <a href="#contact" class="service-link" data-magnetic>Book This Service
-                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                </a>
-              </div>
-            </div>
+            <a class="svc-arrow" href="#contact" aria-label="Book Party &amp; Event Makeup" data-magnetic>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+            <figure class="svc-media" aria-hidden="true"><img src="assets/img/service-party-makeup.jpg" width="1000" height="1500" alt="" loading="lazy" decoding="async" /></figure>
           </article>
 
-          <article class="service-card reveal" data-delay="2" data-cat="hair">
-            <div class="service-media">
-              <img src="assets/img/service-hair-styling.jpg" alt="Hairdresser styling a client's hair in the salon" loading="lazy" />
-              <span class="service-num" aria-hidden="true">03</span>
+          <article class="svc-row reveal" data-delay="2" data-cat="hair">
+            <span class="svc-num" aria-hidden="true">03</span>
+            <div class="svc-body">
+              <span class="svc-cat">Hair</span>
+              <h3 class="svc-name"><a href="#contact">Hair Artistry</a></h3>
+              <p class="svc-desc">Blow-dries, curls, updos and finishing styles shaped to move beautifully with you.</p>
             </div>
-            <div class="service-body">
-              <span class="service-cat">Hair</span>
-              <h3 class="service-name">Hair Styling</h3>
-              <p class="service-desc">Blow-dries, curls, updos and finishing styles shaped to move beautifully with you.</p>
-              <ul class="service-feats">
-                <li>Blow-dry, curls &amp; sleek finishes</li>
-                <li>Updos shaped for occasion</li>
-              </ul>
-              <div class="service-foot">
-                <a href="#contact" class="service-link" data-magnetic>Book This Service
-                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                </a>
-              </div>
-            </div>
+            <a class="svc-arrow" href="#contact" aria-label="Book Hair Artistry" data-magnetic>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+            <figure class="svc-media" aria-hidden="true"><img src="assets/img/service-hair-styling.jpg" width="1000" height="1500" alt="" loading="lazy" decoding="async" /></figure>
           </article>
 
-          <article class="service-card reveal" data-cat="hair">
-            <div class="service-media">
-              <img src="assets/img/service-hair-color.jpg" alt="Client receiving an elegant hair color treatment" loading="lazy" />
-              <span class="service-num" aria-hidden="true">04</span>
+          <article class="svc-row reveal" data-cat="hair">
+            <span class="svc-num" aria-hidden="true">04</span>
+            <div class="svc-body">
+              <span class="svc-cat">Hair</span>
+              <h3 class="svc-name"><a href="#contact">Hair Color</a></h3>
+              <p class="svc-desc">Rich, dimensional color — from soft glosses to full transformations — tailored to your tone.</p>
             </div>
-            <div class="service-body">
-              <span class="service-cat">Hair</span>
-              <h3 class="service-name">Hair Color</h3>
-              <p class="service-desc">Rich, dimensional color — from soft glosses to full transformations — tailored to your tone.</p>
-              <ul class="service-feats">
-                <li>Glosses, balayage &amp; full color</li>
-                <li>Shade matched to your tone</li>
-              </ul>
-              <div class="service-foot">
-                <a href="#contact" class="service-link" data-magnetic>Book This Service
-                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                </a>
-              </div>
-            </div>
+            <a class="svc-arrow" href="#contact" aria-label="Book Hair Color" data-magnetic>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+            <figure class="svc-media" aria-hidden="true"><img src="assets/img/service-hair-color.jpg" width="1000" height="1500" alt="" loading="lazy" decoding="async" /></figure>
           </article>
 
-          <article class="service-card reveal" data-delay="1" data-cat="skin">
-            <div class="service-media">
-              <img src="assets/img/service-facial.jpg" alt="Professional facial and skincare treatment at the salon" loading="lazy" />
-              <span class="service-num" aria-hidden="true">05</span>
+          <article class="svc-row reveal" data-delay="1" data-cat="skin">
+            <span class="svc-num" aria-hidden="true">05</span>
+            <div class="svc-body">
+              <span class="svc-cat">Skin &amp; Spa</span>
+              <h3 class="svc-name"><a href="#contact">Skin &amp; Facial Rituals</a></h3>
+              <p class="svc-desc">Deeply cleansing facials and dermal care that leave skin rested, bright and luminous.</p>
             </div>
-            <div class="service-body">
-              <span class="service-cat">Skin &amp; Spa</span>
-              <h3 class="service-name">Facials &amp; Skincare</h3>
-              <p class="service-desc">Deeply cleansing facials and dermal care that leave skin rested, bright and luminous.</p>
-              <ul class="service-feats">
-                <li>Deep-cleansing facial rituals</li>
-                <li>Bright, luminous complexion</li>
-              </ul>
-              <div class="service-foot">
-                <a href="#contact" class="service-link" data-magnetic>Book This Service
-                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                </a>
-              </div>
-            </div>
+            <a class="svc-arrow" href="#contact" aria-label="Book Skin &amp; Facial Rituals" data-magnetic>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+            <figure class="svc-media" aria-hidden="true"><img src="assets/img/service-facial.jpg" width="1000" height="1500" alt="" loading="lazy" decoding="async" /></figure>
           </article>
 
-          <article class="service-card reveal" data-delay="2" data-cat="hair">
-            <div class="service-media">
-              <img src="assets/img/service-hair-treatment.jpg" alt="Luxury hair treatment being applied in the salon" loading="lazy" />
-              <span class="service-num" aria-hidden="true">06</span>
+          <article class="svc-row reveal" data-delay="2" data-cat="hair">
+            <span class="svc-num" aria-hidden="true">06</span>
+            <div class="svc-body">
+              <span class="svc-cat">Hair</span>
+              <h3 class="svc-name"><a href="#contact">Hair Treatments</a></h3>
+              <p class="svc-desc">Nourishing rituals and restorative care that return strength, silkiness and shine to hair.</p>
             </div>
-            <div class="service-body">
-              <span class="service-cat">Hair</span>
-              <h3 class="service-name">Hair Treatments</h3>
-              <p class="service-desc">Nourishing rituals and restorative care that return strength, silkiness and shine to hair.</p>
-              <ul class="service-feats">
-                <li>Nourishing, restorative rituals</li>
-                <li>Strength, silkiness &amp; shine</li>
-              </ul>
-              <div class="service-foot">
-                <a href="#contact" class="service-link" data-magnetic>Book This Service
-                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                </a>
-              </div>
-            </div>
+            <a class="svc-arrow" href="#contact" aria-label="Book Hair Treatments" data-magnetic>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+            <figure class="svc-media" aria-hidden="true"><img src="assets/img/service-hair-treatment.jpg" width="1000" height="1500" alt="" loading="lazy" decoding="async" /></figure>
           </article>
         </div>
 
-        <div class="services-cta reveal">
-          <span class="services-cta-orn" aria-hidden="true"></span>
-          <p class="section-cta-text">Every look begins with a conversation about you.</p>
+        <div class="service-footnote reveal-up" data-delay="1">
+          <span class="footnote-orn" aria-hidden="true">✦</span>
+          <p>Every look begins with a conversation about you.</p>
           <a href="#contact" class="btn btn-solid" data-magnetic>Book a Consultation</a>
-          <span class="services-cta-orn" aria-hidden="true"></span>
         </div>
       </div>
     </section>
 
     <!-- ============ BRIDAL EXPERIENCE ============ -->
     <section class="section bridal" id="bridal">
+      <span class="bridal-vertical" aria-hidden="true">Bridal Atelier</span>
       <div class="container bridal-grid">
         <div class="bridal-media reveal" data-parallax="0.1">
           <figure class="media-frame media-frame--tall">
-            <img src="assets/img/bridal-main.jpg" alt="Bride being prepared for her wedding day in the salon" />
+            <img src="assets/img/bridal-main.jpg" width="1600" height="2400" loading="lazy" decoding="async" alt="Bride being prepared for her wedding day in the salon" />
           </figure>
           <figure class="media-frame media-frame--float reveal" data-delay="2">
-            <img src="assets/img/bridal-accent.jpg" alt="Makeup artist applying the finishing touch to a bride" />
+            <img src="assets/img/bridal-accent.jpg" width="900" height="1350" loading="lazy" decoding="async" alt="Makeup artist applying the finishing touch to a bride" />
           </figure>
           <span class="bridal-stamp reveal" data-delay="3" aria-hidden="true">Est.<br />Lahore</span>
         </div>
 
         <div class="bridal-copy">
-          <p class="eyebrow reveal-up">The Bridal Experience</p>
+          <p class="eyebrow reveal-up">The Bridal Atelier</p>
           <h2 class="section-title reveal-up" data-delay="1">
-            Your Most Beautiful Day<br /><em>Deserves More Than Ordinary.</em>
+            Made for Your<br /><em>Most Beautiful</em><br />Chapter.
           </h2>
-          <svg class="orn-divider reveal-up" data-delay="2" viewBox="0 0 200 24" fill="none" aria-hidden="true">
-            <g stroke="currentColor" stroke-width="1">
-              <path d="M16 12h66"/>
-              <path d="M118 12h66"/>
-              <path d="M88 8.5l3.5 3.5-3.5 3.5-3.5-3.5z"/>
-              <path d="M112 8.5l3.5 3.5-3.5 3.5-3.5-3.5z"/>
-              <circle cx="16" cy="12" r="1.5" fill="currentColor" stroke="none"/>
-              <circle cx="184" cy="12" r="1.5" fill="currentColor" stroke="none"/>
-            </g>
-            <path d="M100 6l6 6-6 6-6-6z" fill="currentColor" stroke="none"/>
-          </svg>
           <p class="reveal-up" data-delay="2">
             Your wedding day deserves artistry that understands it. We begin with a private consultation — discussing your dress, your skin, your vision — and translate it into makeup and hair that feel unmistakably you.
           </p>
@@ -418,11 +416,15 @@
             <li class="reveal-up" data-delay="3"><span class="point-mark" aria-hidden="true"></span>Event-ready finishing touches</li>
             <li class="reveal-up" data-delay="3"><span class="point-mark" aria-hidden="true"></span>Consultation before your appointment</li>
           </ul>
-          <div class="reveal-up" data-delay="4">
-            <a href="#contact" class="btn btn-solid" data-magnetic>Plan Your Bridal Look</a>
+          <div class="bridal-cta reveal-up" data-delay="4">
+            <a href="#contact" class="btn btn-gold btn-bridal" data-magnetic>Plan Your Bridal Look
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+            <span class="bridal-cta-note" aria-hidden="true">Private consultation included</span>
           </div>
         </div>
       </div>
+      <div class="bridal-caption" aria-hidden="true">Bridal Atelier — WAPDA Town, Lahore</div>
     </section>
 
     <!-- ============ SIGNATURE EXPERIENCE ============ -->
@@ -444,27 +446,37 @@
           </svg>
         </header>
 
-        <div class="exp-grid">
-          <div class="exp-item reveal">
-            <span class="exp-index" aria-hidden="true">01</span>
-            <h3 class="exp-title">Personalized Attention</h3>
-            <p class="exp-desc">Every appointment is shaped around you — your features, your occasion, your preferences — never a routine.</p>
-          </div>
-          <div class="exp-item reveal" data-delay="1">
-            <span class="exp-index" aria-hidden="true">02</span>
-            <h3 class="exp-title">Professional Beauty Artistry</h3>
-            <p class="exp-desc">Trained artists and modern techniques bring precision, care and a practiced eye to every look we create.</p>
-          </div>
-          <div class="exp-item reveal" data-delay="2">
-            <span class="exp-index" aria-hidden="true">03</span>
-            <h3 class="exp-title">Elegant Salon Environment</h3>
-            <p class="exp-desc">A calm, beautifully designed space in WAPDA Town where every visit feels unhurried and considered.</p>
-          </div>
-          <div class="exp-item reveal" data-delay="3">
-            <span class="exp-index" aria-hidden="true">04</span>
-            <h3 class="exp-title">Beauty That Lasts Beyond The Moment</h3>
-            <p class="exp-desc">From long-wearing bridal looks to skin care that builds, we think about how you look — and feel — long after you leave.</p>
-          </div>
+        <div class="journey">
+          <ol class="journey-list">
+            <li class="journey-step reveal">
+              <span class="journey-index" aria-hidden="true">01</span>
+              <div class="journey-body">
+                <h3 class="journey-title">Discover</h3>
+                <p class="journey-desc">We begin with a private consultation — your features, your occasion, what you love, and what you want to feel.</p>
+              </div>
+            </li>
+            <li class="journey-step reveal" data-delay="1">
+              <span class="journey-index" aria-hidden="true">02</span>
+              <div class="journey-body">
+                <h3 class="journey-title">Define</h3>
+                <p class="journey-desc">Your look is designed around you — every shade, every detail considered and agreed before we begin.</p>
+              </div>
+            </li>
+            <li class="journey-step reveal" data-delay="2">
+              <span class="journey-index" aria-hidden="true">03</span>
+              <div class="journey-body">
+                <h3 class="journey-title">Create</h3>
+                <p class="journey-desc">Our artists work with precision and care, layering each step until the look becomes unmistakably yours.</p>
+              </div>
+            </li>
+            <li class="journey-step reveal" data-delay="3">
+              <span class="journey-index" aria-hidden="true">04</span>
+              <div class="journey-body">
+                <h3 class="journey-title">Reveal</h3>
+                <p class="journey-desc">The final reveal — beauty that lasts beyond the moment, and the confidence to carry it with you.</p>
+              </div>
+            </li>
+          </ol>
         </div>
       </div>
     </section>
@@ -503,21 +515,21 @@
               </button>
 
               <figure class="carousel-slide is-active" data-slide data-full="assets/img/og-bridal.jpg">
-                <img src="assets/img/og-bridal.jpg" alt="Signature bridal look in traditional attire" />
+                <img src="assets/img/og-bridal.jpg" width="1200" height="1800" loading="lazy" decoding="async" alt="Signature bridal look in traditional attire" />
                 <figcaption class="carousel-caption">
                   <span class="pf-tag">Signature Bridal</span>
                   <span class="carousel-title">The Signature Red</span>
                 </figcaption>
               </figure>
               <figure class="carousel-slide" data-slide data-full="assets/img/hero-bride.jpg">
-                <img src="assets/img/hero-bride.jpg" alt="Timeless bridal glam with soft curls" />
+                <img src="assets/img/hero-bride.jpg" width="1600" height="2397" loading="lazy" decoding="async" alt="Timeless bridal glam with soft curls" />
                 <figcaption class="carousel-caption">
                   <span class="pf-tag">Bridal</span>
                   <span class="carousel-title">Timeless Bridal Glam</span>
                 </figcaption>
               </figure>
               <figure class="carousel-slide" data-slide data-full="assets/img/hero-bride-alt.jpg">
-                <img src="assets/img/hero-bride-alt.jpg" alt="Walima glam bridal look with gold accents" />
+                <img src="assets/img/hero-bride-alt.jpg" width="1920" height="1280" loading="lazy" decoding="async" alt="Walima glam bridal look with gold accents" />
                 <figcaption class="carousel-caption">
                   <span class="pf-tag">Walima</span>
                   <span class="carousel-title">Golden Hour Walima</span>
@@ -556,9 +568,9 @@
 
         <!-- Portfolio card grid -->
         <div class="portfolio-grid" data-portfolio-grid>
-          <article class="pf-card reveal" data-cat="bridal" data-full="assets/img/hero-bride.jpg">
+          <article class="pf-card reveal" data-cat="bridal" data-full="assets/img/gallery-1.jpg">
             <figure class="pf-card-media">
-              <img src="assets/img/hero-bride.jpg" alt="Timeless bridal glam with soft curls" loading="lazy" />
+              <img src="assets/img/gallery-1.jpg" width="1000" height="1500" alt="Timeless bridal glam with soft curls" loading="lazy" decoding="async" />
             </figure>
             <figcaption class="pf-card-caption">
               <span class="pf-tag">Bridal</span>
@@ -568,7 +580,7 @@
 
           <article class="pf-card reveal" data-delay="1" data-cat="makeup" data-full="assets/img/portfolio-party.jpg">
             <figure class="pf-card-media">
-              <img src="assets/img/portfolio-party.jpg" alt="Party makeup with glossy lips" loading="lazy" />
+              <img src="assets/img/portfolio-party.jpg" width="1600" height="1068" alt="Party makeup with glossy lips" loading="lazy" decoding="async" />
             </figure>
             <figcaption class="pf-card-caption">
               <span class="pf-tag">Makeup</span>
@@ -578,7 +590,7 @@
 
           <article class="pf-card reveal" data-delay="2" data-cat="hair" data-full="assets/img/portfolio-balayage.jpg">
             <figure class="pf-card-media">
-              <img src="assets/img/portfolio-balayage.jpg" alt="Balayage hair color in warm tones" loading="lazy" />
+              <img src="assets/img/portfolio-balayage.jpg" width="1600" height="1068" alt="Balayage hair color in warm tones" loading="lazy" decoding="async" />
             </figure>
             <figcaption class="pf-card-caption">
               <span class="pf-tag">Hair</span>
@@ -586,9 +598,9 @@
             </figcaption>
           </article>
 
-          <article class="pf-card reveal" data-cat="bridal" data-full="assets/img/hero-bride-alt.jpg">
+          <article class="pf-card reveal" data-cat="bridal" data-full="assets/img/gallery-2.jpg">
             <figure class="pf-card-media">
-              <img src="assets/img/hero-bride-alt.jpg" alt="Walima glam bridal look with gold accents" loading="lazy" />
+              <img src="assets/img/gallery-2.jpg" width="1000" height="1500" alt="Walima glam bridal look with gold accents" loading="lazy" decoding="async" />
             </figure>
             <figcaption class="pf-card-caption">
               <span class="pf-tag">Bridal</span>
@@ -598,7 +610,7 @@
 
           <article class="pf-card reveal" data-delay="1" data-cat="skin" data-full="assets/img/portfolio-glow.jpg">
             <figure class="pf-card-media">
-              <img src="assets/img/portfolio-glow.jpg" alt="Relaxing glow facial spa treatment" loading="lazy" />
+              <img src="assets/img/portfolio-glow.jpg" width="1600" height="1067" alt="Relaxing glow facial spa treatment" loading="lazy" decoding="async" />
             </figure>
             <figcaption class="pf-card-caption">
               <span class="pf-tag">Skin &amp; Spa</span>
@@ -608,7 +620,7 @@
 
           <article class="pf-card reveal" data-delay="2" data-cat="hair" data-full="assets/img/gallery-9.jpg">
             <figure class="pf-card-media">
-              <img src="assets/img/gallery-9.jpg" alt="Elegant bridal hairstyle with floral accessories" loading="lazy" />
+              <img src="assets/img/gallery-9.jpg" width="1000" height="1500" alt="Elegant bridal hairstyle with floral accessories" loading="lazy" decoding="async" />
             </figure>
             <figcaption class="pf-card-caption">
               <span class="pf-tag">Hair</span>
@@ -618,7 +630,7 @@
 
           <article class="pf-card reveal" data-cat="makeup" data-full="assets/img/gallery-3.jpg">
             <figure class="pf-card-media">
-              <img src="assets/img/gallery-3.jpg" alt="Makeup artist applying makeup to a client" loading="lazy" />
+              <img src="assets/img/gallery-3.jpg" width="1000" height="1500" alt="Makeup artist applying makeup to a client" loading="lazy" decoding="async" />
             </figure>
             <figcaption class="pf-card-caption">
               <span class="pf-tag">Makeup</span>
@@ -628,7 +640,7 @@
 
           <article class="pf-card reveal" data-delay="1" data-cat="skin" data-full="assets/img/gallery-7.jpg">
             <figure class="pf-card-media">
-              <img src="assets/img/gallery-7.jpg" alt="Client enjoying a relaxing beauty treatment" loading="lazy" />
+              <img src="assets/img/gallery-7.jpg" width="1000" height="667" alt="Client enjoying a relaxing beauty treatment" loading="lazy" decoding="async" />
             </figure>
             <figcaption class="pf-card-caption">
               <span class="pf-tag">Skin &amp; Spa</span>
@@ -638,7 +650,7 @@
 
           <article class="pf-card reveal" data-delay="2" data-cat="hair" data-full="assets/img/gallery-5.jpg">
             <figure class="pf-card-media">
-              <img src="assets/img/gallery-5.jpg" alt="Stylish woman posing in the hair salon" loading="lazy" />
+              <img src="assets/img/gallery-5.jpg" width="1000" height="1500" alt="Stylish woman posing in the hair salon" loading="lazy" decoding="async" />
             </figure>
             <figcaption class="pf-card-caption">
               <span class="pf-tag">Hair</span>
@@ -651,7 +663,7 @@
       <div class="container gallery-cta reveal">
         <p class="section-cta-text">The full collection of our looks lives on Instagram.</p>
         <a href="https://instagram.com/" class="btn btn-outline is-inline" data-magnetic data-instagram target="_blank" rel="noopener">View Our Beauty Gallery</a>
-        <p class="gallery-note">Follow <strong>@glitzandglam.lahore</strong> for daily looks, or connect with us on Instagram.</p>
+        <p class="gallery-note">Follow us on Instagram for daily looks, bridal stories &amp; behind-the-scenes moments.</p>
       </div>
     </section>
 
@@ -669,59 +681,39 @@
       <figure class="lightbox-figure">
         <img class="lightbox-img" src="" alt="" />
         <figcaption class="lightbox-caption"></figcaption>
+        <span class="lightbox-count" data-lightbox-count aria-hidden="true"></span>
       </figure>
     </div>
 
     <!-- ============ REVIEWS ============ -->
     <section class="section reviews" id="reviews">
       <div class="container">
-        <header class="section-head">
+        <header class="section-head serif-center">
           <p class="eyebrow reveal-up">Client Love</p>
-          <h2 class="section-title reveal-up" data-delay="1">Trusted by Thousands of <em>Beauty Clients</em></h2>
-          <svg class="orn-divider reveal-up" data-delay="2" viewBox="0 0 200 24" fill="none" aria-hidden="true">
-            <g stroke="currentColor" stroke-width="1">
-              <path d="M16 12h66"/>
-              <path d="M118 12h66"/>
-              <path d="M88 8.5l3.5 3.5-3.5 3.5-3.5-3.5z"/>
-              <path d="M112 8.5l3.5 3.5-3.5 3.5-3.5-3.5z"/>
-              <circle cx="16" cy="12" r="1.5" fill="currentColor" stroke="none"/>
-              <circle cx="184" cy="12" r="1.5" fill="currentColor" stroke="none"/>
-            </g>
-            <path d="M100 6l6 6-6 6-6-6z" fill="currentColor" stroke="none"/>
-          </svg>
+          <h2 class="section-title reveal-up" data-delay="1">Loved &amp; Trusted in<br /><em>WAPDA Town</em></h2>
         </header>
 
-        <div class="reviews-summary reveal" data-delay="2">
-          <p class="review-score">4.4 <span aria-hidden="true">★</span></p>
-          <div class="review-stars" aria-hidden="true"><span class="stars-fill"></span></div>
-          <p class="review-note">Rated 4.4 on Google · 2,200+ reviews —<br />a standard we work to honour every single visit.</p>
-        </div>
+        <div class="editorial-proof">
+          <div class="proof-score reveal" data-delay="2">
+            <p class="proof-number"><span data-count="4.4" data-dec="1">4.4</span><span class="proof-star" aria-hidden="true">★</span></p>
+            <div class="proof-stars" aria-hidden="true"><span class="stars-fill"></span></div>
+            <p class="proof-meta"><span data-count="2200" data-reviews>2200</span>+ Google Reviews</p>
+          </div>
 
-        <div class="review-grid">
-          <article class="review-card reveal">
-            <span class="rev-quote" aria-hidden="true">“</span>
-            <p class="rev-text">A beautiful, relaxing experience from start to finish. The team made me feel completely at ease and the attention to detail was remarkable.</p>
-            <footer class="rev-meta">
-              <span class="rev-name">Client Experience</span>
-              <span class="rev-stars-mini" aria-hidden="true">★★★★★</span>
-            </footer>
-          </article>
-          <article class="review-card reveal" data-delay="1">
-            <span class="rev-quote" aria-hidden="true">“</span>
-            <p class="rev-text">My bridal makeup stayed flawless through the entire function. I felt like myself — only the most polished version. Truly grateful for the care shown.</p>
-            <footer class="rev-meta">
-              <span class="rev-name">Client Experience — Bridal</span>
-              <span class="rev-stars-mini" aria-hidden="true">★★★★★</span>
-            </footer>
-          </article>
-          <article class="review-card reveal" data-delay="2">
-            <span class="rev-quote" aria-hidden="true">“</span>
-            <p class="rev-text">The salon itself is stunning — calm, clean and elegant. My hair color and facial were exactly what I hoped for. I have found my place.</p>
-            <footer class="rev-meta">
-              <span class="rev-name">Client Experience</span>
-              <span class="rev-stars-mini" aria-hidden="true">★★★★☆</span>
-            </footer>
-          </article>
+          <div class="proof-snippets">
+            <blockquote class="proof-snippet reveal">
+              <p>“A beautiful, relaxing experience from start to finish. The attention to detail was remarkable.”</p>
+              <footer><span>Bridal Client — Placeholder</span></footer>
+            </blockquote>
+            <blockquote class="proof-snippet reveal" data-delay="1">
+              <p>“My bridal makeup stayed flawless the entire function. I felt like myself — only more polished.”</p>
+              <footer><span>Bridal Client — Placeholder</span></footer>
+            </blockquote>
+            <blockquote class="proof-snippet reveal" data-delay="2">
+              <p>“Calm, clean and elegant. My hair color and facial were exactly what I hoped for.”</p>
+              <footer><span>Regular Client — Placeholder</span></footer>
+            </blockquote>
+          </div>
         </div>
 
         <p class="reviews-disclaimer reveal">Representative client experiences shown as placeholders until verified testimonials are available.</p>
@@ -735,7 +727,7 @@
     <!-- ============ APPOINTMENT CTA ============ -->
     <section class="appointment" id="appointment">
       <div class="appointment-bg" aria-hidden="true">
-        <img src="assets/img/cta-bg.jpg" alt="" />
+        <img src="assets/img/cta-bg.jpg" width="1600" height="2400" alt="" loading="lazy" decoding="async" />
       </div>
       <div class="appointment-scrim" aria-hidden="true"></div>
       <svg class="appointment-orn appointment-orn--tl" viewBox="0 0 120 120" fill="none" aria-hidden="true">
@@ -752,23 +744,11 @@
       </svg>
       <div class="container appointment-inner">
         <p class="eyebrow eyebrow--light reveal-up">Reserve Your Visit</p>
-        <h2 class="section-title section-title--light reveal-up" data-delay="1">Ready for Your Next<br /><em>Beauty Moment?</em></h2>
-        <svg class="orn-divider orn-divider--light orn-divider--center reveal-up" data-delay="2" viewBox="0 0 200 24" fill="none" aria-hidden="true">
-          <g stroke="currentColor" stroke-width="1">
-            <path d="M16 12h66"/>
-            <path d="M118 12h66"/>
-            <path d="M88 8.5l3.5 3.5-3.5 3.5-3.5-3.5z"/>
-            <path d="M112 8.5l3.5 3.5-3.5 3.5-3.5-3.5z"/>
-            <circle cx="16" cy="12" r="1.5" fill="currentColor" stroke="none"/>
-            <circle cx="184" cy="12" r="1.5" fill="currentColor" stroke="none"/>
-          </g>
-          <path d="M100 6l6 6-6 6-6-6z" fill="currentColor" stroke="none"/>
-        </svg>
-        <p class="appointment-sub reveal-up" data-delay="2">Reserve your appointment at Glitz &amp; Glam Beauty Salon.</p>
+        <h2 class="appointment-title reveal-up" data-delay="1">Your Beauty<br /><em>Moment</em> Starts Here.</h2>
+        <p class="appointment-sub reveal-up" data-delay="2">Book your appointment at Glitz &amp; Glam — by appointment only.</p>
         <div class="appointment-actions reveal-up" data-delay="3">
-          <a href="https://wa.me/923000000000?text=Hello%20Glitz%20%26%20Glam%2C%20I%20would%20like%20to%20book%20an%20appointment." class="btn btn-whatsapp" data-wa target="_blank" rel="noopener">
-            <svg class="wa-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M17.5 14.4c-.3-.2-1.7-.9-2-1-.3-.1-.5-.1-.7.1-.2.3-.7.9-.9 1.1-.2.2-.3.2-.6.1-.3-.2-1.2-.5-2.3-1.4-.9-.8-1.4-1.7-1.6-2-.2-.3 0-.5.1-.6l.5-.5c.1-.1.2-.3.2-.5s0-.3-.1-.5c0-.2-.6-1.6-.9-2.2-.2-.5-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.5s1.1 2.9 1.2 3.1c.1.2 2.1 3.2 5.1 4.4.7.3 1.3.5 1.7.7.7.2 1.4.2 1.9.1.6-.1 1.7-.7 1.9-1.4.2-.7.2-1.2.2-1.4-.1-.1-.3-.2-.6-.4zM12 2a10 10 0 0 0-8.5 15.2L2.2 22l4.9-1.3A10 10 0 1 0 12 2zm0 18.3c-1.5 0-3-.4-4.3-1.2l-.3-.2-2.9.8.8-2.8-.2-.3A8.3 8.3 0 1 1 12 20.3z"/></svg>
-            Book on WhatsApp
+          <a href="#contact" class="btn btn-gold btn-cta-primary" data-magnetic>Book Your Appointment
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </a>
           <a href="tel:+923000000000" class="btn btn-ghost-light" data-phone target="_blank">Call the Salon</a>
         </div>
@@ -812,12 +792,12 @@
             </div>
             <div class="loc-hours">
               <h3 class="loc-block-title">Opening Hours</h3>
-              <!-- Editable placeholder — verify actual salon hours before launch -->
-              <ul class="hours-list">
+              <!-- Hours are rendered from js/config.js (GLAZ.openingHours). -->
+              <ul class="hours-list" data-hours-list>
                 <li><span>Monday — Saturday</span><span>10:00 AM — 9:00 PM</span></li>
                 <li><span>Sunday</span><span>12:00 PM — 7:00 PM</span></li>
               </ul>
-              <p class="hours-note">Hours shown are placeholders — please confirm current timings with the salon.</p>
+              <p class="hours-note" data-hours-note>Hours shown are placeholders — please confirm current timings with the salon.</p>
             </div>
           </div>
 
@@ -828,7 +808,7 @@
               </span>
               <p class="map-label">Glitz &amp; Glam Beauty Salon</p>
               <p class="map-sub">House No. 12, Block H2, WAPDA Town Phase 1, Lahore</p>
-              <a class="map-link" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&amp;query=WAPDA+Town+Phase+1,+Lahore,+Pakistan">
+              <a class="map-link" target="_blank" rel="noopener" data-map-link href="https://www.google.com/maps/search/?api=1&amp;query=WAPDA+Town+Phase+1,+Lahore,+Pakistan">
                 Open in Google Maps <span aria-hidden="true">↗</span>
               </a>
             </div>
@@ -840,45 +820,23 @@
 
   <!-- ============ FOOTER ============ -->
   <footer class="site-footer">
-    <span class="footer-watermark" aria-hidden="true">Glitz&nbsp;&amp;&nbsp;Glam</span>
-
-    <!-- Top brand area -->
-    <div class="container footer-top">
-      <a class="brand brand--footer" href="#home">
-        <span class="brand-word">Glitz&nbsp;&amp;&nbsp;Glam<span class="brand-sub">Beauty Salon • WAPDA Town</span></span>
+    <!-- Wordmark masthead -->
+    <div class="container footer-masthead">
+      <span class="footer-emblem" aria-hidden="true">
+        <img src="assets/logo-mark.svg" alt="" width="64" height="64" loading="lazy" />
+      </span>
+      <a class="footer-wordmark" href="#home" aria-label="Glitz &amp; Glam Beauty Salon — back to top">
+        <span class="fw-line">Glitz</span>
+        <span class="fw-amp" aria-hidden="true">&amp;</span>
+        <span class="fw-line">Glam</span>
       </a>
-      <p class="footer-desc">Luxury beauty, bridal artistry and personalized salon experiences in Lahore.</p>
-      <div class="footer-ornament" aria-hidden="true"><span></span></div>
+      <p class="footer-tagline">Beauty Salon • WAPDA Town • Lahore</p>
+      <div class="footer-ornament footer-ornament--wide" aria-hidden="true"><span></span></div>
     </div>
 
-    <!-- Link columns -->
-    <div class="container footer-mid">
-      <nav class="footer-col" aria-label="Explore">
-        <h3 class="footer-heading">Explore</h3>
-        <ul>
-          <li><a href="#home">Home</a></li>
-          <li><a href="#about">About</a></li>
-          <li><a href="#services">Services</a></li>
-          <li><a href="#bridal">Bridal</a></li>
-          <li><a href="#gallery">Portfolio</a></li>
-          <li><a href="#reviews">Reviews</a></li>
-          <li><a href="#contact">Contact</a></li>
-        </ul>
-      </nav>
-
-      <nav class="footer-col" aria-label="Services">
-        <h3 class="footer-heading">Services</h3>
-        <ul>
-          <li><a href="#services">Bridal Makeup</a></li>
-          <li><a href="#services">Party Makeup</a></li>
-          <li><a href="#services">Hair Styling</a></li>
-          <li><a href="#services">Hair Color</a></li>
-          <li><a href="#services">Facials &amp; Skincare</a></li>
-          <li><a href="#services">Hair Treatments</a></li>
-        </ul>
-      </nav>
-
-      <div class="footer-col">
+    <!-- Simple contact / links strip -->
+    <div class="container footer-strip">
+      <div class="footer-strip-col footer-visit">
         <h3 class="footer-heading">Visit Us</h3>
         <address class="footer-address">
           House No. 12, Block H2<br />
@@ -886,15 +844,26 @@
           Lahore, 54000
         </address>
         <a class="footer-phone" data-phone-label>+92 300 0000000</a>
-        <a href="https://wa.me/923000000000?text=Hello%20Glitz%20%26%20Glam%2C%20I%20would%20like%20to%20book%20an%20appointment." class="footer-wa" data-wa target="_blank" rel="noopener">
+        <a href="https://wa.me/923000000000" class="footer-wa" data-wa target="_blank" rel="noopener">
           <svg class="wa-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M17.5 14.4c-.3-.2-1.7-.9-2-1-.3-.1-.5-.1-.7.1-.2.3-.7.9-.9 1.1-.2.2-.3.2-.6.1-.3-.2-1.2-.5-2.3-1.4-.9-.8-1.4-1.7-1.6-2-.2-.3 0-.5.1-.6l.5-.5c.1-.1.2-.3.2-.5s0-.3-.1-.5c0-.2-.6-1.6-.9-2.2-.2-.5-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.5s1.1 2.9 1.2 3.1c.1.2 2.1 3.2 5.1 4.4.7.3 1.3.5 1.7.7.7.2 1.4.2 1.9.1.6-.1 1.7-.7 1.9-1.4.2-.7.2-1.2.2-1.4-.1-.1-.3-.2-.6-.4zM12 2a10 10 0 0 0-8.5 15.2L2.2 22l4.9-1.3A10 10 0 1 0 12 2zm0 18.3c-1.5 0-3-.4-4.3-1.2l-.3-.2-2.9.8.8-2.8-.2-.3A8.3 8.3 0 1 1 12 20.3z"/></svg>
           WhatsApp Us
         </a>
       </div>
 
-      <div class="footer-col">
+      <nav class="footer-strip-col footer-links" aria-label="Explore">
+        <h3 class="footer-heading">Explore</h3>
+        <ul class="footer-links-list">
+          <li><a href="#about">About</a></li>
+          <li><a href="#services">Services</a></li>
+          <li><a href="#bridal">Bridal</a></li>
+          <li><a href="#gallery">Portfolio</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+
+      <div class="footer-strip-col footer-follow">
         <h3 class="footer-heading">Follow Our Work</h3>
-        <p class="footer-social-note">Daily looks, bridal stories &amp; behind-the-scenes.</p>
+        <p class="footer-social-note">Bridal stories, daily looks &amp; behind-the-scenes.</p>
         <div class="footer-social">
           <a href="https://instagram.com/" class="social-link" aria-label="Instagram" data-instagram target="_blank" rel="noopener">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.2c3.2 0 3.6 0 4.9.1 1.2.1 1.8.2 2.2.4.6.2 1 .5 1.4.9s.7.8.9 1.4c.2.4.4 1.1.4 2.2.1 1.3.1 1.7.1 4.9s0 3.6-.1 4.9c-.1 1.2-.2 1.8-.4 2.2-.2.6-.5 1-.9 1.4s-.8.7-1.4.9c-.4.2-1.1.4-2.2.4-1.3.1-1.7.1-4.9.1s-3.6 0-4.9-.1c-1.2-.1-1.8-.2-2.2-.4-.6-.2-1-.5-1.4-.9s-.7-.8-.9-1.4c-.2-.4-.4-1.1-.4-2.2C2.2 15.6 2.1 15.2 2.1 12s0-3.6.1-4.9c.1-1.2.2-1.8.4-2.2.2-.6.5-1 .9-1.4s.8-.7 1.4-.9c.4-.2 1.1-.4 2.2-.4C8.4 2.2 8.8 2.2 12 2.2m0 1.8c-3.1 0-3.5 0-4.7.1-1.1.1-1.7.2-2.1.4-.5.2-.9.4-1.2.8-.4.4-.6.7-.8 1.2-.2.4-.3.9-.4 2.1-.1 1.2-.1 1.6-.1 4.7s0 3.5.1 4.7c.1 1.1.2 1.7.4 2.1.2.5.4.9.8 1.2.4.4.7.6 1.2.8.4.2 1 .3 2.1.4 1.2.1 1.6.1 4.7.1s3.5 0 4.7-.1c1.1-.1 1.7-.2 2.1-.4.5-.2.9-.4 1.2-.8.4-.4.6-.7.8-1.2.2-.4.3-.9.4-2.1.1-1.2.1-1.6.1-4.7s0-3.5-.1-4.7c-.1-1.1-.2-1.7-.4-2.1-.2-.5-.4-.9-.8-1.2a3.3 3.3 0 0 0-1.2-.8c-.4-.2-1-.3-2.1-.4-1.2-.1-1.6-.1-4.7-.1zm0 3a5 5 0 1 1 0 10 5 5 0 0 1 0-10zm0 1.8a3.2 3.2 0 1 0 0 6.4 3.2 3.2 0 0 0 0-6.4zm5.2-3a1.2 1.2 0 1 1 0 2.4 1.2 1.2 0 0 1 0-2.4z"/></svg>
@@ -909,26 +878,24 @@
       </div>
     </div>
 
-    <!-- Final CTA -->
-    <div class="container footer-cta-wrap">
-      <div class="footer-cta">
-        <h3 class="footer-cta-title">Your Beauty Moment Starts Here.</h3>
-        <p class="footer-cta-sub">Book your appointment and let Glitz &amp; Glam create your perfect look.</p>
-        <a href="#contact" class="footer-cta-btn" data-magnetic>Book Your Appointment
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </a>
-      </div>
-    </div>
-
-    <!-- Bottom bar -->
-    <div class="container footer-bottom">
-      <p>© 2026 Glitz &amp; Glam Beauty Salon. All rights reserved.</p>
-      <div class="footer-legal">
-        <a href="#home">Privacy Policy</a>
-        <a href="#home">Terms</a>
+    <!-- Final closing wordmark -->
+    <div class="container footer-close">
+      <div class="footer-ornament footer-ornament--wide" aria-hidden="true"><span></span></div>
+      <a class="footer-grandword" href="#home" aria-label="Glitz &amp; Glam — back to top">Glitz <em aria-hidden="true">&amp;</em> Glam</a>
+      <div class="footer-colophon">
+        <span>© 2026 Glitz &amp; Glam Beauty Salon. All rights reserved.</span>
+        <span class="footer-legal">
+          <a href="#home">Privacy Policy</a>
+          <a href="#home">Terms</a>
+        </span>
       </div>
     </div>
   </footer>
+
+  <!-- ============ BACK TO TOP ============ -->
+  <button class="to-top" id="toTop" type="button" aria-hidden="true" tabindex="-1" aria-label="Back to top">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 14l6-6 6 6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </button>
 
   <!-- ============ WHATSAPP FLOATING ============ -->
   <a href="https://wa.me/923000000000?text=Hello%20Glitz%20%26%20Glam%2C%20I%20would%20like%20to%20book%20an%20appointment." class="wa-float" data-wa target="_blank" rel="noopener" aria-label="Book an appointment on WhatsApp">
@@ -936,6 +903,10 @@
     <span class="wa-tooltip" role="tooltip">Book an Appointment</span>
   </a>
 
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/animation.js"></script>
+  <script src="js/motion.js"></script>
   <script src="js/main.js"></script>
 </body>
 </html>
