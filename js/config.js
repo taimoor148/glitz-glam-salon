@@ -9,6 +9,9 @@
    • openingHours : shown in the Contact section (keep true salon hours).
    • hoursNote    : small line under the hours list.
    • rating / reviewCount : Google review data used in Trust strip + Reviews.
+   • prices       : shown in "Menu & Prices" (cat = category chip name).
+                   RATES BELOW ARE SAMPLE PLACEHOLDERS — confirm with the salon.
+   • timeSlots    : Book button → WhatsApp form slot choices.
    • siteUrl    : real production domain. Leave EMPTY ('') until the real
                   domain is known — canonical & og:url are then skipped so
                   no fake domain ships to production.
@@ -28,5 +31,27 @@ var GLAZ = {
   ],
   hoursNote: 'Hours shown are placeholders — please confirm current timings with the salon.',
   rating: '4.4',
-  reviewCount: '2200'
+  reviewCount: '2200',
+
+  /* Prices — SAMPLE PLACEHOLDERS (confirm & edit rates with the salon).
+     cat: category chip shown on the price list; name + price appear as rows.
+     price: display string; put "PKR …" or "From PKR …".                                */
+  prices: [
+    { cat: 'Bridal',   name: 'Bridal Makeup',            price: 'From PKR 45,000' },
+    { cat: 'Bridal',   name: 'Walima / Reception Look',  price: 'From PKR 38,000' },
+    { cat: 'Bridal',   name: 'Bridal Trial',             price: 'PKR 15,000' },
+    { cat: 'Party',    name: 'Party & Event Makeup',     price: 'From PKR 12,000' },
+    { cat: 'Party',    name: 'Engagement Look',          price: 'From PKR 15,000' },
+    { cat: 'Hair',     name: 'Hair Cut & Styling',       price: 'From PKR 3,500' },
+    { cat: 'Hair',     name: 'Hair Colour / Balayage',   price: 'From PKR 12,000' },
+    { cat: 'Hair',     name: 'Hair Treatment',           price: 'From PKR 5,000' },
+    { cat: 'Skin',     name: 'Signature Facial',         price: 'From PKR 7,500' },
+    { cat: 'Skin',     name: 'Glow Facial Ritual',       price: 'From PKR 10,000' }
+  ],
+
+  /* Book form preferred-time slots */
+  timeSlots: ['10:00 AM', '11:30 AM', '1:00 PM', '3:00 PM', '4:30 PM', '6:00 PM', '7:30 PM'],
+
+  /* Booking message starts with this greeting; service/date/time are appended. */
+  bookingGreeting: 'Hello Glitz & Glam! I would like to book an appointment.'
 };

@@ -1843,6 +1843,29 @@ body.cursor-hover .cursor-dot { opacity: 0; }
   transform: translateX(-101%);
   animation: preDraw 0.8s var(--ease) 0.2s forwards;
 }
+.preloader::before {
+  content: ""; position: absolute; z-index: 0;
+  left: 50%; top: 50%;
+  width: 190px; height: 190px; margin: -95px 0 0 -95px; border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(198, 161, 94, 0.3), rgba(198, 161, 94, 0) 70%);
+  animation: preBloom 2.4s ease-in-out infinite alternate;
+}
+.preloader img, .preloader-line, .preloader-word { position: relative; z-index: 1; }
+.preloader-word {
+  display: grid; gap: 7px; text-align: center;
+  margin-top: -6px;
+}
+.preloader-word span {
+  font-size: 0.6rem; letter-spacing: 0.46em; text-indent: 0.46em;
+  text-transform: uppercase; color: rgba(247, 241, 231, 0.8);
+  opacity: 0;
+  animation: preWord 0.9s var(--ease) 0.35s forwards;
+}
+.preloader-word span:first-child {
+  color: var(--champagne); font-weight: 600; letter-spacing: 0.54em; text-indent: 0.54em;
+}
+@keyframes preBloom { from { opacity: 0.3; transform: scale(0.9); } to { opacity: 0.85; transform: scale(1.12); } }
+@keyframes preWord { from { opacity: 0; letter-spacing: 0.14em; } to { opacity: 1; } }
 @keyframes preIn { from { opacity: 0; transform: translateY(10px) scale(0.9); } to { opacity: 1; transform: none; } }
 @keyframes preDraw { to { transform: translateX(0); } }
 @keyframes preOut {
@@ -2187,6 +2210,184 @@ body.cursor-hover .cursor-dot { opacity: 0; }
   .hours-list li { font-size: 0.84rem; }
   .gallery-note { font-size: 0.78rem; }
   .trust-label { letter-spacing: 0.1em; }
+}
+
+/* ============================================================
+   BOOKING MODAL — WhatsApp handoff form
+   ============================================================ */
+.booking-modal {
+  position: fixed; inset: 0; z-index: 4000;
+  visibility: hidden; opacity: 0;
+  transition: opacity 0.4s var(--ease), visibility 0.4s;
+}
+.booking-modal.is-open { visibility: visible; opacity: 1; }
+.booking-overlay {
+  position: absolute; inset: 0;
+  background: rgba(23, 12, 16, 0.72);
+  backdrop-filter: blur(3px);
+}
+.booking-panel {
+  position: relative; margin: 4vh auto; z-index: 1;
+  width: min(560px, 92vw); max-height: 92vh; overflow: auto;
+  background: var(--cream-3);
+  border-radius: 12px;
+  box-shadow: 0 50px 110px -40px rgba(0, 0, 0, 0.85);
+  padding: clamp(28px, 5vw, 48px);
+  transform: translateY(24px) scale(0.97);
+  transition: transform 0.5s var(--ease);
+}
+.booking-modal.is-open .booking-panel { transform: none; }
+.booking-close {
+  position: absolute; top: 16px; right: 16px;
+  width: 42px; height: 42px; border-radius: 50%;
+  display: grid; place-items: center;
+  color: var(--muted); background: transparent; border: 1px solid var(--line);
+  transition: background 0.35s var(--ease), color 0.35s var(--ease);
+}
+.booking-close svg { width: 18px; height: 18px; }
+.booking-close:hover { background: var(--wine); color: var(--cream); border-color: var(--wine); }
+.booking-head { margin-bottom: 28px; }
+.booking-head .eyebrow { margin-bottom: 10px; }
+.booking-title,
+.booking-head h2 {
+  font-family: var(--serif); font-size: clamp(1.7rem, 4vw, 2.3rem);
+  margin-bottom: 10px;
+}
+.booking-head h2 em { color: var(--wine); }
+.booking-note { font-size: 0.92rem; color: var(--muted); line-height: 1.6; }
+.booking-form .field { margin-bottom: 18px; }
+.booking-form .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.booking-form label {
+  display: block; margin-bottom: 7px;
+  font-size: 0.66rem; font-weight: 600; letter-spacing: 0.24em;
+  text-transform: uppercase; color: var(--text);
+}
+.booking-form label .opt { color: var(--muted); text-transform: none; letter-spacing: 0; font-weight: 400; }
+.booking-form select,
+.booking-form input[type="date"],
+.booking-form textarea {
+  width: 100%; padding: 12px 14px;
+  font-family: var(--sans); font-size: 0.95rem; color: var(--text);
+  background: #fff; border: 1px solid var(--line); border-radius: 8px;
+  transition: border-color 0.3s var(--ease), box-shadow 0.3s var(--ease);
+}
+.booking-form select:focus,
+.booking-form input[type="date"]:focus,
+.booking-form textarea:focus {
+  outline: none; border-color: var(--champagne);
+  box-shadow: 0 0 0 3px rgba(198, 161, 94, 0.18);
+}
+.booking-actions { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 24px; align-items: center; }
+@media (max-width: 640px) {
+  .booking-form .field-row { grid-template-columns: 1fr; }
+  .booking-actions .btn { width: 100%; justify-content: center; }
+  .booking-panel { padding: 26px 18px 30px; }
+}
+
+/* ============================================================
+   MENU & PRICES
+   ============================================================ */
+.menu { background: var(--cream-3); }
+.menu-list { display: grid; gap: 10px; margin-top: clamp(36px, 5vw, 56px); }
+.menu-cat {
+  grid-column: 1 / -1;
+  display: flex; align-items: center; gap: 14px;
+  margin: 22px 0 2px;
+  font-size: 0.68rem; font-weight: 600; letter-spacing: 0.32em;
+  text-transform: uppercase; color: var(--wine);
+}
+.menu-cat::after { content: ""; flex: 1; height: 1px; background: var(--line); }
+.menu-row {
+  display: grid; grid-template-columns: 1fr auto;
+  gap: 24px; align-items: baseline;
+  padding: 14px 4px;
+  border-bottom: 1px solid var(--line);
+  transition: padding 0.4s var(--ease);
+}
+.menu-row:hover { padding-left: 8px; }
+.menu-row-name { font-size: 1.04rem; color: var(--text); }
+.menu-row-price {
+  font-family: var(--serif); font-style: italic;
+  font-size: 1.05rem; color: var(--wine); white-space: nowrap;
+}
+.menu-note {
+  margin-top: 34px; text-align: center;
+  font-size: 0.9rem; color: var(--muted);
+}
+.menu-note a { color: var(--wine); text-decoration: underline; text-underline-offset: 3px; }
+
+/* ============================================================
+   FAQ
+   ============================================================ */
+.faq { background: var(--cream); }
+.faq-list { max-width: 780px; margin: clamp(36px, 5vw, 60px) auto 0; }
+.faq-item {
+  border-bottom: 1px solid var(--line);
+  padding: 18px 4px;
+}
+.faq-item summary {
+  cursor: pointer; list-style: none;
+  font-family: var(--serif); font-size: 1.18rem; color: var(--text);
+  display: flex; align-items: center; gap: 14px;
+  -webkit-tap-highlight-color: transparent;
+}
+.faq-item summary::-webkit-details-marker { display: none; }
+.faq-item summary::before {
+  content: "+"; flex: 0 0 auto;
+  width: 26px; height: 26px; border-radius: 50%;
+  display: grid; place-items: center;
+  font-size: 0.95rem; font-weight: 600;
+  color: var(--wine); border: 1px solid var(--line);
+  transition: transform 0.4s var(--ease), background 0.4s var(--ease), color 0.4s var(--ease);
+}
+.faq-item[open] summary::before {
+  transform: rotate(45deg);
+  background: var(--wine); color: var(--cream); border-color: var(--wine);
+}
+.faq-item p {
+  margin: 12px 0 4px 40px; max-width: 60ch;
+  font-size: 0.95rem; line-height: 1.7; color: var(--muted);
+}
+
+/* ============================================================
+   REFINED MOTION — section-title word reveal, svc glow, lightbox
+   ============================================================ */
+/* Section titles: opacity via reveal-up, the sweep lives in masked words */
+.js .section-title { transform: none; }
+.js .section-title .wt-wrap {
+  display: inline-block; overflow: hidden;
+  vertical-align: top;
+  padding-bottom: 0.08em; margin-bottom: -0.08em;
+}
+.js .section-title .wt-inner {
+  display: inline-block;
+  transform: translateY(115%);
+  transition: transform 0.72s var(--ease);
+  will-change: transform;
+}
+.js .section-title.in .wt-inner { transform: none; }
+
+/* Services rows: champagne glow breathes over the surface on hover */
+.svc-row::before {
+  content: ""; position: absolute; inset: 0; z-index: 0;
+  background: radial-gradient(90% 120% at 18% 0%, rgba(231, 205, 157, 0.22) 0%, rgba(255, 255, 255, 0) 62%);
+  opacity: 0; transition: opacity 0.6s var(--ease);
+  pointer-events: none;
+}
+.svc-row:hover::before { opacity: 1; }
+
+/* Lightbox: gentle figure entrance and settle */
+.lightbox-figure {
+  transform: scale(0.96);
+  opacity: 0;
+  transition: transform 0.5s cubic-bezier(0.22, 1.2, 0.36, 1), opacity 0.45s var(--ease);
+}
+.lightbox.is-open .lightbox-figure { transform: none; opacity: 1; }
+.lightbox-img {
+  transition: opacity 0.5s var(--ease), transform 0.5s var(--ease);
+}
+@media (prefers-reduced-motion: reduce) {
+  .lightbox-figure { transform: none; }
 }
 
 /* ============================================================

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Menu &amp; Prices — Glitz &amp; Glam Beauty Salon</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#170c10; --wine:#6e1f2c; --wine-deep:#48121b;
+    --cream:#f7f1e7; --cream-2:#efe5d4; --champagne:#c6a15e; --champagne-l:#e3cd9d;
+    --gold:#b8904c; --text:#2b2023; --muted:#7c6a60;
+    --serif:"Cormorant Garamond",Georgia,serif; --sans:"Jost","Segoe UI",sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:var(--sans);font-weight:300;color:var(--text);background:var(--cream);-webkit-font-smoothing:antialiased}
+  .sheet{width:210mm;min-height:297mm;margin:0 auto;background:var(--cream);padding:14mm 16mm 12mm;display:flex;flex-direction:column}
+  .topline{height:1px;background:linear-gradient(90deg,transparent,var(--champagne),transparent);margin-bottom:9mm}
+  header{text-align:center;margin-bottom:4mm}
+  .logo{width:34mm;height:auto;margin:0 auto 4mm;display:block}
+  .brand{font-family:var(--serif);font-size:30pt;font-weight:600;letter-spacing:.06em;color:var(--wine-deep);line-height:1}
+  .brand em{font-style:italic;color:var(--champagne)}
+  .tag{font-size:7.5pt;letter-spacing:.46em;text-transform:uppercase;color:var(--muted);margin-top:2.5mm}
+  .title{font-family:var(--serif);font-size:16pt;color:var(--wine);margin-top:6mm;letter-spacing:.04em}
+  .rule{width:16mm;height:.5mm;background:var(--champagne);margin:3mm auto 0}
+  .menu{margin-top:7mm;flex:1}
+  .cat{display:flex;align-items:center;gap:4mm;margin:6mm 0 1.5mm;font-size:8.5pt;font-weight:600;letter-spacing:.34em;text-transform:uppercase;color:var(--wine)}
+  .cat::after{content:"";flex:1;height:.35mm;background:#e3d6c4}
+  .row{display:flex;justify-content:space-between;align-items:baseline;gap:8mm;padding:1.35mm 0;border-bottom:.3mm dotted #d9c9b4;font-size:10pt}
+  .row:last-child{border-bottom:none}
+  .row-name{font-family:var(--serif);font-size:13pt;color:var(--text)}
+  .row-price{font-family:var(--serif);font-style:italic;font-size:12.5pt;color:var(--wine);white-space:nowrap}
+  .note{text-align:center;font-size:8pt;color:var(--muted);margin-top:8mm;line-height:1.8}
+  footer{border-top:.5mm solid var(--champagne);margin-top:8mm;padding-top:4mm;display:grid;grid-template-columns:1fr 1fr;gap:6mm;font-size:8pt;color:var(--text)}
+  footer .col strong{display:block;font-size:6.5pt;font-weight:600;letter-spacing:.3em;text-transform:uppercase;color:var(--muted);margin-bottom:1.2mm}
+  footer .col{line-height:1.8}
+  footer .brand-mark{grid-column:1/-1;text-align:center;font-family:var(--serif);font-style:italic;color:var(--champagne);font-size:10pt;letter-spacing:.1em;margin-top:1mm}
+  @media print{
+    @page{size:A4;margin:0}
+    html,body{background:#fff}
+    .sheet{width:210mm;min-height:296mm;box-shadow:none}
+    .no-print{display:none!important}
+  }
+  .no-print{position:fixed;right:14px;bottom:14px;z-index:5;display:flex;gap:10px}
+  .no-print button{font-family:var(--sans);font-size:10px;letter-spacing:.08em;padding:10px 18px;border:1px solid var(--wine);background:var(--wine);color:var(--cream);border-radius:4px;cursor:pointer}
+  .no-print button.secondary{background:transparent;color:var(--wine)}
+</style>
+</head>
+<body>
+<div class="no-print">
+  <button class="secondary" onclick="window.print()">Print</button>
+  <button onclick="window.print()">Save PDF</button>
+</div>
+<div class="sheet" id="sheet">
+  <div class="topline"></div>
+  <header>
+    <img class="logo" src="../assets/logo-mark.svg" alt="">
+    <p class="brand">Glitz <em>&amp;</em> Glam</p>
+    <p class="tag">Beauty Salon &middot; WAPDA Town &middot; Lahore</p>
+    <p class="title">Menu &amp; Prices</p>
+    <div class="rule"></div>
+  </header>
+  <div class="menu" id="menu" data-pricelist></div>
+  <p class="note" data-note>Indicative rates only &mdash; your final quote is confirmed during a free consultation.<br>Dates are subject to availability. Please confirm current prices with the salon before your visit.</p>
+  <footer>
+    <div class="col">
+      <strong>Contact</strong>
+      <span data-phone></span><br>
+      <span data-instagram></span>
+    </div>
+    <div class="col">
+      <strong>Location</strong>
+      WAPDA Town, Phase 1, Lahore, Pakistan
+    </div>
+    <p class="brand-mark">Beauty, Refined.</p>
+  </footer>
+</div>
+<script src="../js/config.js"></script>
+<script>
+(function(){
+  var CFG = window.GLAZ || {};
+  var list = document.getElementById('menu');
+  var lastCat = null;
+  (CFG.prices || []).forEach(function(p){
+    if (p.cat !== lastCat){
+      var c = document.createElement('h2');
+      c.className = 'cat';
+      c.textContent = p.cat;
+      list.appendChild(c);
+      lastCat = p.cat;
+    }
+    var row = document.createElement('div');
+    row.className = 'row';
+    var n = document.createElement('span');
+    n.className = 'row-name';
+    n.textContent = p.name;
+    var pr = document.createElement('span');
+    pr.className = 'row-price';
+    pr.textContent = p.price;
+    row.appendChild(n);
+    row.appendChild(pr);
+    list.appendChild(row);
+  });
+  var ph = document.querySelector('[data-phone]');
+  if (ph) ph.textContent = CFG.phoneDisplay || '';
+  var ig = document.querySelector('[data-instagram]');
+  if (ig) ig.textContent = (CFG.instagram || '').replace(/^https?:\/\//,'');
+})();
+</script>
+</body>
+</html>

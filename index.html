@@ -59,15 +59,58 @@
     "image": "assets/img/og-bridal.jpg"
   }
   </script>
+
+  <!-- Structured data: FAQ -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Do I need to book in advance?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes — we are an appointment-only salon. Weekends and bridal dates fill quickly, so we recommend booking at least a few days ahead. Bridal packages are usually reserved 1–2 weeks before the event."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Do you offer bridal trials?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Absolutely. A trial lets us perfect your look before the big day — shades, placement and finish are agreed and documented so the final result is exactly what you loved."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Do you cater for parties and events?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes — party, walima and event looks are available for groups. Message us on WhatsApp for group bookings and on-location services."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How do I confirm or change my appointment?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Use the booking form or message us on WhatsApp — we confirm every booking personally and are happy to move your date or time should plans change."
+        }
+      }
+    ]
+  }
+  </script>
 </head>
 <body>
 
-  <a class="skip-link" href="#main">Skip to content</a>
+  <a class="skip-link" href="#home">Skip to content</a>
 
   <!-- Preloader -->
   <div class="preloader" aria-hidden="true">
     <img src="assets/logo-mark.svg" alt="" width="64" height="64" />
     <span class="preloader-line"></span>
+    <span class="preloader-word"><span>Glitz &amp; Glam</span><span>Beauty Salon</span></span>
   </div>
 
   <!-- Scroll progress -->
@@ -96,7 +139,7 @@
           <li><a href="#gallery" class="nav-link">Gallery</a></li>
           <li><a href="#contact" class="nav-link">Contact</a></li>
         </ul>
-        <a href="#contact" class="btn btn-pill nav-cta">Book Appointment</a>
+        <a href="#booking" class="btn btn-pill nav-cta" data-open-booking>Book Appointment</a>
       </nav>
 
       <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-expanded="false" aria-controls="siteNav">
@@ -110,7 +153,7 @@
   <main id="main">
 
     <!-- ============ HERO ============ -->
-    <section class="hero" id="home" aria-label="Welcome to Glitz & Glam Beauty Salon">
+    <section class="hero" id="home" tabindex="-1" aria-label="Welcome to Glitz &amp; Glam Beauty Salon">
       <div class="hero-media" data-parallax="0.22" aria-hidden="true">
         <img src="assets/img/hero-bride-wide.jpg" width="1920" height="1231" fetchpriority="high" decoding="async" alt="Elegant South Asian bride in traditional red attire with bridal jewelry and henna, seated in a warm, elegant setting" />
       </div>
@@ -144,7 +187,7 @@
         </h1>
         <p class="hero-sub reveal-up" data-delay="3">Luxury beauty, bridal artistry and personalized salon experiences in the heart of WAPDA Town, Lahore.</p>
         <div class="hero-actions reveal-up" data-delay="4">
-          <a href="#contact" class="btn btn-solid" data-magnetic>Book Your Appointment</a>
+          <a href="#booking" class="btn btn-solid" data-magnetic data-open-booking>Book Your Appointment</a>
           <a href="#services" class="btn btn-ghost-light" data-magnetic>Explore Our Services</a>
         </div>
         <div class="hero-meta reveal-up" data-delay="5">
@@ -305,10 +348,10 @@
             <span class="svc-num" aria-hidden="true">01</span>
             <div class="svc-body">
               <span class="svc-cat">Bridal</span>
-              <h3 class="svc-name"><a href="#contact">Bridal Makeup</a></h3>
+              <h3 class="svc-name"><a href="#booking" data-open-booking>Bridal Makeup</a></h3>
               <p class="svc-desc">Editorial-grade bridal artistry crafted around your features, your dress and your day.</p>
             </div>
-            <a class="svc-arrow" href="#contact" aria-label="Book Bridal Makeup" data-magnetic>
+            <a class="svc-arrow" href="#booking" data-open-booking aria-label="Book Bridal Makeup" data-magnetic>
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </a>
             <figure class="svc-media" aria-hidden="true"><img src="assets/img/service-bridal-makeup.jpg" width="1000" height="1498" alt="" loading="lazy" decoding="async" /></figure>
@@ -318,10 +361,10 @@
             <span class="svc-num" aria-hidden="true">02</span>
             <div class="svc-body">
               <span class="svc-cat">Makeup</span>
-              <h3 class="svc-name"><a href="#contact">Party &amp; Event Makeup</a></h3>
+              <h3 class="svc-name"><a href="#booking" data-open-booking>Party &amp; Event Makeup</a></h3>
               <p class="svc-desc">Glowing, occasion-ready looks for evenings, functions and celebrations of every kind.</p>
             </div>
-            <a class="svc-arrow" href="#contact" aria-label="Book Party &amp; Event Makeup" data-magnetic>
+            <a class="svc-arrow" href="#booking" data-open-booking aria-label="Book Party &amp; Event Makeup" data-magnetic>
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </a>
             <figure class="svc-media" aria-hidden="true"><img src="assets/img/service-party-makeup.jpg" width="1000" height="1500" alt="" loading="lazy" decoding="async" /></figure>
@@ -331,10 +374,10 @@
             <span class="svc-num" aria-hidden="true">03</span>
             <div class="svc-body">
               <span class="svc-cat">Hair</span>
-              <h3 class="svc-name"><a href="#contact">Hair Artistry</a></h3>
+              <h3 class="svc-name"><a href="#booking" data-open-booking>Hair Artistry</a></h3>
               <p class="svc-desc">Blow-dries, curls, updos and finishing styles shaped to move beautifully with you.</p>
             </div>
-            <a class="svc-arrow" href="#contact" aria-label="Book Hair Artistry" data-magnetic>
+            <a class="svc-arrow" href="#booking" data-open-booking aria-label="Book Hair Artistry" data-magnetic>
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </a>
             <figure class="svc-media" aria-hidden="true"><img src="assets/img/service-hair-styling.jpg" width="1000" height="1500" alt="" loading="lazy" decoding="async" /></figure>
@@ -344,10 +387,10 @@
             <span class="svc-num" aria-hidden="true">04</span>
             <div class="svc-body">
               <span class="svc-cat">Hair</span>
-              <h3 class="svc-name"><a href="#contact">Hair Color</a></h3>
+              <h3 class="svc-name"><a href="#booking" data-open-booking>Hair Color</a></h3>
               <p class="svc-desc">Rich, dimensional color — from soft glosses to full transformations — tailored to your tone.</p>
             </div>
-            <a class="svc-arrow" href="#contact" aria-label="Book Hair Color" data-magnetic>
+            <a class="svc-arrow" href="#booking" data-open-booking aria-label="Book Hair Color" data-magnetic>
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </a>
             <figure class="svc-media" aria-hidden="true"><img src="assets/img/service-hair-color.jpg" width="1000" height="1500" alt="" loading="lazy" decoding="async" /></figure>
@@ -357,10 +400,10 @@
             <span class="svc-num" aria-hidden="true">05</span>
             <div class="svc-body">
               <span class="svc-cat">Skin &amp; Spa</span>
-              <h3 class="svc-name"><a href="#contact">Skin &amp; Facial Rituals</a></h3>
+              <h3 class="svc-name"><a href="#booking" data-open-booking>Skin &amp; Facial Rituals</a></h3>
               <p class="svc-desc">Deeply cleansing facials and dermal care that leave skin rested, bright and luminous.</p>
             </div>
-            <a class="svc-arrow" href="#contact" aria-label="Book Skin &amp; Facial Rituals" data-magnetic>
+            <a class="svc-arrow" href="#booking" data-open-booking aria-label="Book Skin &amp; Facial Rituals" data-magnetic>
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </a>
             <figure class="svc-media" aria-hidden="true"><img src="assets/img/service-facial.jpg" width="1000" height="1500" alt="" loading="lazy" decoding="async" /></figure>
@@ -370,10 +413,10 @@
             <span class="svc-num" aria-hidden="true">06</span>
             <div class="svc-body">
               <span class="svc-cat">Hair</span>
-              <h3 class="svc-name"><a href="#contact">Hair Treatments</a></h3>
+              <h3 class="svc-name"><a href="#booking" data-open-booking>Hair Treatments</a></h3>
               <p class="svc-desc">Nourishing rituals and restorative care that return strength, silkiness and shine to hair.</p>
             </div>
-            <a class="svc-arrow" href="#contact" aria-label="Book Hair Treatments" data-magnetic>
+            <a class="svc-arrow" href="#booking" data-open-booking aria-label="Book Hair Treatments" data-magnetic>
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </a>
             <figure class="svc-media" aria-hidden="true"><img src="assets/img/service-hair-treatment.jpg" width="1000" height="1500" alt="" loading="lazy" decoding="async" /></figure>
@@ -383,8 +426,33 @@
         <div class="service-footnote reveal-up" data-delay="1">
           <span class="footnote-orn" aria-hidden="true">✦</span>
           <p>Every look begins with a conversation about you.</p>
-          <a href="#contact" class="btn btn-solid" data-magnetic>Book a Consultation</a>
+          <a href="#booking" class="btn btn-solid" data-magnetic data-open-booking>Book a Consultation</a>
         </div>
+      </div>
+    </section>
+
+    <!-- ============ MENU & PRICES ============ -->
+    <section class="section menu" id="menu" aria-label="Services and pricing">
+      <div class="container">
+        <header class="section-head">
+          <p class="eyebrow reveal-up">Investment</p>
+          <h2 class="section-title reveal-up" data-delay="1">Menu &amp; <em>Prices</em></h2>
+          <svg class="orn-divider reveal-up" data-delay="2" viewBox="0 0 200 24" fill="none" aria-hidden="true">
+            <g stroke="currentColor" stroke-width="1">
+              <path d="M16 12h66"/>
+              <path d="M118 12h66"/>
+              <path d="M88 8.5l3.5 3.5-3.5 3.5-3.5-3.5z"/>
+              <path d="M112 8.5l3.5 3.5-3.5 3.5-3.5-3.5z"/>
+              <circle cx="16" cy="12" r="1.5" fill="currentColor" stroke="none"/>
+              <circle cx="184" cy="12" r="1.5" fill="currentColor" stroke="none"/>
+            </g>
+            <path d="M100 6l6 6-6 6-6-6z" fill="currentColor" stroke="none"/>
+          </svg>
+        </header>
+        <div class="menu-list" data-pricelist></div>
+        <p class="menu-note reveal">Indicative rates — your final quote is confirmed during a free consultation.
+          <a href="#booking" data-open-booking>Request a custom quote</a>.
+        </p>
       </div>
     </section>
 
@@ -417,7 +485,7 @@
             <li class="reveal-up" data-delay="3"><span class="point-mark" aria-hidden="true"></span>Consultation before your appointment</li>
           </ul>
           <div class="bridal-cta reveal-up" data-delay="4">
-            <a href="#contact" class="btn btn-gold btn-bridal" data-magnetic>Plan Your Bridal Look
+            <a href="#booking" class="btn btn-gold btn-bridal" data-magnetic data-open-booking>Plan Your Bridal Look
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </a>
             <span class="bridal-cta-note" aria-hidden="true">Private consultation included</span>
@@ -553,7 +621,7 @@
               <li>Premium, skin-friendly products</li>
               <li>Looks that last from ceremony to late</li>
             </ul>
-            <a href="#contact" class="btn btn-outline is-inline" data-magnetic>Begin Your Look</a>
+            <a href="#booking" class="btn btn-outline is-inline" data-magnetic data-open-booking>Begin Your Look</a>
           </aside>
         </div>
 
@@ -685,6 +753,45 @@
       </figure>
     </div>
 
+    <!-- ============ BOOKING MODAL ============ -->
+    <div class="booking-modal" id="booking" role="dialog" aria-modal="true" aria-labelledby="bookingTitle" tabindex="-1">
+      <div class="booking-overlay" data-booking-close></div>
+      <div class="booking-panel" role="document">
+        <button class="booking-close" type="button" data-booking-close aria-label="Close booking form">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+        </button>
+        <header class="booking-head">
+          <p class="eyebrow">Reserve Your Experience</p>
+          <h2 id="bookingTitle">Book an <em>Appointment</em></h2>
+          <p class="booking-note">Pick a service and a preferred slot — we confirm your booking on WhatsApp.</p>
+        </header>
+        <form class="booking-form" id="bookingForm" novalidate>
+          <div class="field">
+            <label for="bkService">Service</label>
+            <select id="bkService" name="service" required></select>
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label for="bkDate">Preferred date</label>
+              <input id="bkDate" name="date" type="date" required />
+            </div>
+            <div class="field">
+              <label for="bkTime">Preferred time</label>
+              <select id="bkTime" name="time" required></select>
+            </div>
+          </div>
+          <div class="field">
+            <label for="bkNotes">Notes <span class="opt">(optional)</span></label>
+            <textarea id="bkNotes" name="notes" rows="3" placeholder="Occasion, bridal preview, or any questions…"></textarea>
+          </div>
+          <div class="booking-actions">
+            <button class="btn btn-gold btn-cta-primary" type="submit">Send Booking Request</button>
+            <a class="btn btn-outline" data-phone>or call the salon</a>
+          </div>
+        </form>
+      </div>
+    </div>
+
     <!-- ============ REVIEWS ============ -->
     <section class="section reviews" id="reviews">
       <div class="container">
@@ -719,7 +826,7 @@
         <p class="reviews-disclaimer reveal">Representative client experiences shown as placeholders until verified testimonials are available.</p>
 
         <div class="section-cta reveal">
-          <a href="#contact" class="btn btn-solid" data-magnetic>Book Your Experience</a>
+          <a href="#booking" class="btn btn-solid" data-magnetic data-open-booking>Book Your Experience</a>
         </div>
       </div>
     </section>
@@ -747,10 +854,42 @@
         <h2 class="appointment-title reveal-up" data-delay="1">Your Beauty<br /><em>Moment</em> Starts Here.</h2>
         <p class="appointment-sub reveal-up" data-delay="2">Book your appointment at Glitz &amp; Glam — by appointment only.</p>
         <div class="appointment-actions reveal-up" data-delay="3">
-          <a href="#contact" class="btn btn-gold btn-cta-primary" data-magnetic>Book Your Appointment
+          <a href="#booking" class="btn btn-gold btn-cta-primary" data-magnetic data-open-booking>Book Your Appointment
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </a>
           <a href="tel:+923000000000" class="btn btn-ghost-light" data-phone target="_blank">Call the Salon</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ FAQ ============ -->
+    <section class="section faq" id="faq" aria-label="Frequently asked questions">
+      <div class="container">
+        <header class="section-head">
+          <p class="eyebrow reveal-up">Good to Know</p>
+          <h2 class="section-title reveal-up" data-delay="1">Questions, <em>Answered</em></h2>
+        </header>
+        <div class="faq-list">
+          <details class="faq-item reveal" open>
+            <summary>Do I need to book in advance?</summary>
+            <p>Yes — we are an appointment-only salon. Weekends and bridal dates fill quickly, so we recommend booking at least a few days ahead. Bridal packages are usually reserved 1–2 weeks before the event.</p>
+          </details>
+          <details class="faq-item reveal">
+            <summary>Do you offer bridal trials?</summary>
+            <p>Absolutely. A trial lets us perfect your look before the big day — shades, placement and finish are agreed and documented so the final result is exactly what you loved.</p>
+          </details>
+          <details class="faq-item reveal">
+            <summary>What should I bring to my bridal consultation?</summary>
+            <p>Photos or references you love, your outfit's swatch if you have one, and any products your skin prefers. If you have henna or an event back-to-back, tell us your timeline so we can plan it well.</p>
+          </details>
+          <details class="faq-item reveal">
+            <summary>Do you cater for parties and events?</summary>
+            <p>Yes — party, walima and event looks are available for groups. Message us on WhatsApp for group bookings and on-location services.</p>
+          </details>
+          <details class="faq-item reveal">
+            <summary>How do I confirm or change my appointment?</summary>
+            <p>Use the booking form above or message us on WhatsApp — we confirm every booking personally and are happy to move your date or time should plans change.</p>
+          </details>
         </div>
       </div>
     </section>

@@ -401,7 +401,12 @@
     row.addEventListener('click', function (e) {
       if (e.target.closest('a')) return;
       var link = row.querySelector('.svc-arrow');
-      if (link && link.getAttribute('href')) window.location.href = link.getAttribute('href');
+      if (link && link.hasAttribute('data-open-booking')) {
+        var evt = new MouseEvent('click', { bubbles: true, cancelable: true });
+        link.dispatchEvent(evt);
+      } else if (link && link.getAttribute('href')) {
+        window.location.href = link.getAttribute('href');
+      }
     });
   });
 
@@ -519,6 +524,198 @@
     });
   }
   initLightbox();
+
+  /* ---------- 13. Section-title word reveal ----------
+     Splits each .section-title into masked word runs so the sweep
+     plays inside the existing reveal-up. <em> words (italic accents)
+     are left untouched. No-op under reduced motion. */
+  function initWordReveal() {
+    if (reduceMotion) return;
+    document.querySelectorAll('.section-title').forEach(function (h) {
+      var walker = document.createTreeWalker(h, NodeFilter.SHOW_TEXT);
+      var textNodes = [];
+      while (walker.nextNode()) textNodes.push(walker.currentNode);
+      textNodes.forEach(function (tn) {
+        if (!tn.nodeValue || !tn.nodeValue.trim()) return;
+        if (tn.parentElement && tn.parentElement.closest('em')) return;
+        var frag = document.createDocumentFragment();
+        var value = tn.nodeValue;
+        var re = /\S+/g;
+        var last = 0, m;
+        while ((m = re.exec(value)) !== null) {
+          if (m.index > last) frag.appendChild(document.createTextNode(value.slice(last, m.index)));
+          var wrap = document.createElement('span');
+          wrap.className = 'wt-wrap';
+          var inner = document.createElement('span');
+          inner.className = 'wt-inner';
+          inner.textContent = m[0];
+          wrap.appendChild(inner);
+          frag.appendChild(wrap);
+          last = re.lastIndex;
+        }
+        if (last < value.length) frag.appendChild(document.createTextNode(value.slice(last)));
+        tn.parentNode.replaceChild(frag, tn);
+      });
+    });
+  }
+  initWordReveal();
+
+  /* ---------- 14. Menu & Prices renderer (from config) ---------- */
+  var priceList = document.querySelector('[data-pricelist]');
+  function initPriceList() {
+    priceList = document.querySelector('[data-pricelist]');
+    if (!priceList || !CFG.prices || !CFG.prices.length) return;
+    var lastCat = null;
+    var added = [];
+    CFG.prices.forEach(function (p) {
+      if (p.cat !== lastCat) {
+        var cat = document.createElement('h3');
+        cat.className = 'menu-cat';
+        cat.textContent = p.cat;
+        priceList.appendChild(cat);
+        lastCat = p.cat;
+      }
+      var row = document.createElement('div');
+      row.className = 'menu-row reveal';
+      row.innerHTML = '<span class="menu-row-name">' + esc(p.name) +
+        '</span><span class="menu-row-price">' + esc(p.price) + '</span>';
+      priceList.appendChild(row);
+      added.push(row);
+    });
+    /* fold freshly-added rows into the reveal observer */
+    if ('IntersectionObserver' in window && !reduceMotion) {
+      added.forEach(function (el) {
+        var d = parseFloat(el.getAttribute('data-delay') || 0);
+        if (d > 0) el.style.transitionDelay = d * 0.14 + 's';
+        revealObs.observe(el);
+      });
+    } else {
+      added.forEach(function (el) { el.classList.add('in'); });
+    }
+  }
+  initPriceList();
+
+  /* ---------- 15. Booking modal (WhatsApp handoff) ---------- */
+  function initBooking() {
+    var modal = document.getElementById('booking');
+    var form = document.getElementById('bookingForm');
+    if (!modal || !form) return;
+    var svcField = form.querySelector('#bkService');
+    var timeField = form.querySelector('#bkTime');
+    var dateField = form.querySelector('#bkDate');
+    var noteField = form.querySelector('#bkNotes');
+    var lastFocus = null;
+
+    /* populate selects from config */
+    var firstOpt = document.createElement('option');
+    firstOpt.value = '';
+    firstOpt.textContent = '— Choose a service —';
+    svcField.appendChild(firstOpt);
+    if (CFG.prices && CFG.prices.length) {
+      CFG.prices.forEach(function (p) {
+        var o = document.createElement('option');
+        o.value = p.name;
+        o.setAttribute('data-cat', p.cat || '');
+        o.textContent = p.name;
+        svcField.appendChild(o);
+      });
+    }
+    (CFG.timeSlots || []).forEach(function (slot) {
+      var o = document.createElement('option');
+      o.value = slot;
+      o.textContent = slot;
+      timeField.appendChild(o);
+    });
+
+    /* earliest reservable date is today */
+    if (dateField) {
+      var now = new Date();
+      dateField.min = now.getFullYear() + '-' +
+        String(now.getMonth() + 1).padStart(2, '0') + '-' +
+        String(now.getDate()).padStart(2, '0');
+    }
+
+    function open(name) {
+      lastFocus = document.activeElement;
+      if (name && svcField) {
+        var match = Array.prototype.filter.call(svcField.options, function (o) { return o.value === name; })[0];
+        if (match) svcField.value = match.value;
+      }
+      modal.classList.add('is-open');
+      modal.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+      (svcField || modal).focus();
+    }
+
+    function close() {
+      modal.classList.remove('is-open');
+      modal.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+      if (lastFocus && lastFocus.focus) lastFocus.focus();
+    }
+
+    document.addEventListener('click', function (e) {
+      var opener = e.target.closest('[data-open-booking]');
+      if (opener) {
+        e.preventDefault();
+        var row = opener.closest('.svc-row');
+        if (row && svcField) {
+          var nameEl = row.querySelector('.svc-name');
+          open(nameEl ? nameEl.textContent.trim() : '');
+        } else {
+          open('');
+        }
+      }
+      if (e.target.closest('[data-booking-close]')) close();
+    });
+
+    document.addEventListener('keydown', function (e) {
+      if (!modal.classList.contains('is-open')) return;
+      if (e.key === 'Escape') close();
+      if (e.key === 'Tab') trapFocus(modal, e);
+    });
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      if (!form.reportValidity()) return;
+      if (!CFG.whatsapp) return;
+      var parts = [CFG.bookingGreeting || 'Hello Glitz & Glam!'];
+      parts.push('Service: ' + (svcField.value || '—'));
+      parts.push('Date: ' + (dateField.value || '—'));
+      parts.push('Time: ' + (timeField.value || '—'));
+      if (noteField && noteField.value.trim()) parts.push('Notes: ' + noteField.value.trim());
+      window.open('https://wa.me/' + CFG.whatsapp + '?text=' + encodeURIComponent(parts.join('\n')), '_blank');
+      close();
+    });
+  }
+
+  /* shared focus trap (booking + lightbox) */
+  function trapFocus(container, ev) {
+    if (ev.key !== 'Tab') return;
+    var focusables = Array.prototype.filter.call(
+      container.querySelectorAll('a[href], button:not([disabled]), select, input, textarea, [tabindex]:not([tabindex="-1"])'),
+      function (el) { return el.offsetParent !== null; }
+    );
+    if (!focusables.length) return;
+    var first = focusables[0];
+    var last = focusables[focusables.length - 1];
+    if (ev.shiftKey && (document.activeElement === first || document.activeElement === container)) {
+      ev.preventDefault();
+      last.focus();
+    } else if (!ev.shiftKey && (document.activeElement === last || document.activeElement === container)) {
+      ev.preventDefault();
+      first.focus();
+    }
+  }
+  initBooking();
+
+  /* ---------- 16. Lightbox accessibility polish ---------- */
+  var lightbox = document.getElementById('lightbox');
+  if (lightbox) {
+    document.addEventListener('keydown', function (e) {
+      if (lightbox.classList.contains('is-open')) trapFocus(lightbox, e);
+    });
+  }
 
   /* ---------- Init ---------- */
   applyConfig();
