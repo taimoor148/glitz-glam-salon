@@ -63,9 +63,9 @@
       preloader.classList.add('is-done');
     };
     window.addEventListener('load', function () {
-      setTimeout(hidePre, 1700);
+      setTimeout(hidePre, 2700);
     });
-    if (document.readyState === 'complete') setTimeout(hidePre, 1700);
+    if (document.readyState === 'complete') setTimeout(hidePre, 2700);
   }
 
   /* ---------- 2. Scroll progress bar ---------- */
